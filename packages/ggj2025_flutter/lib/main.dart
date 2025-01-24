@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_libserialport/flutter_libserialport.dart';
+import 'package:ggj2025_flutter/game.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,24 +51,25 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> initPorts() async {
-    port = SerialPort('/dev/cu.usbmodem11101');
-    port.openReadWrite();
-    // this reboots the python program running on rpi
-    port.write(Uint8List.fromList('\x03\x04'.codeUnits));
-    await Future.delayed(const Duration(seconds: 1));
-    reader = SerialPortReader(port)
-      ..stream.listen((data) {
-        final String dataString = String.fromCharCodes(data).replaceAll(RegExp(r"\s+"), '');
-        if (dataString.isEmpty) {
-          return;
-        }
-        receivedData.add((SerialMessageType.incoming, dataString));
-        setState(() {});
-      });
+    // port = SerialPort('/dev/cu.usbmodem11101');
+    // port.openReadWrite();
+    // // this reboots the python program running on rpi
+    // port.write(Uint8List.fromList('\x03\x04'.codeUnits));
+    // await Future.delayed(const Duration(seconds: 1));
+    // reader = SerialPortReader(port)
+    //   ..stream.listen((data) {
+    //     final String dataString = String.fromCharCodes(data).replaceAll(RegExp(r"\s+"), '');
+    //     if (dataString.isEmpty) {
+    //       return;
+    //     }
+    //     receivedData.add((SerialMessageType.incoming, dataString));
+    //     setState(() {});
+    //   });
   }
 
   @override
   Widget build(BuildContext context) {
+    return GGJ25GameWidget();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,

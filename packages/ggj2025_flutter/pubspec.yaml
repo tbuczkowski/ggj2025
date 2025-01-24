@@ -8,6 +8,7 @@ environment:
   sdk: ^3.6.0
 
 dependencies:
+  flame: ^1.23.0
   flutter:
     sdk: flutter
   flutter_libserialport: ^0.4.0
