@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_libserialport/flutter_libserialport.dart';
 
@@ -5,21 +7,9 @@ void main() {
   runApp(const MyApp());
 }
 
-extension IntToString on int {
-  String toHex() => '0x${toRadixString(16)}';
-  String toPadded([int width = 3]) => toString().padLeft(width, '0');
-  String toTransport() {
-    switch (this) {
-      case SerialPortTransport.usb:
-        return 'USB';
-      case SerialPortTransport.bluetooth:
-        return 'Bluetooth';
-      case SerialPortTransport.native:
-        return 'Native';
-      default:
-        return 'Unknown';
-    }
-  }
+enum SerialMessageType {
+  incoming,
+  outgoing,
 }
 
 class MyApp extends StatelessWidget {
@@ -48,7 +38,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var availablePorts = [];
+  late SerialPort port;
+  late SerialPortReader reader;
+
+  final List<(SerialMessageType, String)> receivedData = [];
 
   @override
   void initState() {
@@ -56,57 +49,61 @@ class _MyHomePageState extends State<MyHomePage> {
     initPorts();
   }
 
-  void initPorts() {
-    setState(() => availablePorts = SerialPort.availablePorts);
+  Future<void> initPorts() async {
+    port = SerialPort('/dev/cu.usbmodem11101');
+    port.openReadWrite();
+    // this reboots the python program running on rpi
+    port.write(Uint8List.fromList('\x03\x04'.codeUnits));
+    await Future.delayed(const Duration(seconds: 1));
+    reader = SerialPortReader(port)
+      ..stream.listen((data) {
+        final String dataString = String.fromCharCodes(data).replaceAll(RegExp(r"\s+"), '');
+        if (dataString.isEmpty) {
+          return;
+        }
+        receivedData.add((SerialMessageType.incoming, dataString));
+        setState(() {});
+      });
   }
 
   @override
   Widget build(BuildContext context) {
-    print(SerialPort.availablePorts);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: ListView(
+      body: Column(
         children: [
-          for (final address in availablePorts)
-            Builder(builder: (context) {
-              final port = SerialPort(address);
-              return ExpansionTile(
-                title: Text(address),
-                children: [
-                  CardListTile('Description', port.description),
-                  CardListTile('Transport', port.transport.toTransport()),
-                  CardListTile('USB Bus', port.busNumber?.toPadded()),
-                  CardListTile('USB Device', port.deviceNumber?.toPadded()),
-                  CardListTile('Vendor ID', port.vendorId?.toHex()),
-                  CardListTile('Product ID', port.productId?.toHex()),
-                  CardListTile('Manufacturer', port.manufacturer),
-                  CardListTile('Product Name', port.productName),
-                  CardListTile('Serial Number', port.serialNumber),
-                  CardListTile('MAC Address', port.macAddress),
-                ],
-              );
-            }),
+          Expanded(
+            child: ListView.builder(
+              itemCount: receivedData.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  child: Row(
+                    children: [
+                      Icon(receivedData[index].$1 == SerialMessageType.incoming
+                          ? Icons.arrow_downward
+                          : Icons.arrow_upward),
+                      Flexible(child: Text(receivedData[index].$2)),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          SizedBox(
+            height: 60,
+            width: MediaQuery.sizeOf(context).width,
+            child: TextField(
+              onSubmitted: (String text) {
+                port.write(Uint8List.fromList(text.codeUnits + '\r\n'.codeUnits));
+                receivedData.add((SerialMessageType.outgoing, text));
+                setState(() {});
+              },
+            ),
+          )
         ],
-      ),
-    );
-  }
-}
-
-class CardListTile extends StatelessWidget {
-  final String name;
-  final String? value;
-
-  CardListTile(this.name, this.value);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: Text(value ?? 'N/A'),
-        subtitle: Text(name),
       ),
     );
   }
