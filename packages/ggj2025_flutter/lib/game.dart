@@ -7,6 +7,9 @@ import 'package:ggj2025_flutter/actors/fellowship.dart';
 import 'package:ggj2025_flutter/gfx_assets.dart';
 import 'package:ggj2025_flutter/objects/ground.dart';
 import 'package:ggj2025_flutter/sfx_assets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:ggj2025_flutter/Combos/DoggoComboHandler.dart';
 
 class GGJ25GameWidget extends StatelessWidget {
   final GGJ25Game game = GGJ25Game();
@@ -21,6 +24,7 @@ class GGJ25GameWidget extends StatelessWidget {
 
 class GGJ25Game extends FlameGame {
   late final ParallaxComponent parallaxComponent;
+  final DoggoComboHandler doggoInputCombos = DoggoComboHandler();
 
   @override
   Future<void> onLoad() async {
@@ -44,5 +48,20 @@ class GGJ25Game extends FlameGame {
     add(Fellowship(position: Vector2(100, 625)));
 
     await super.onLoad();
+  }
+
+  @override
+  KeyEventResult onKeyEvent(
+    KeyEvent event,
+    Set<LogicalKeyboardKey> keysPressed) {
+    final isKeyDown = event is KeyDownEvent;
+
+    final isSpace = keysPressed.contains(LogicalKeyboardKey.space);
+
+    if (isSpace && isKeyDown) {
+      doggoInputCombos.comboInput('bork');
+      return KeyEventResult.handled;
+    }
+    return KeyEventResult.ignored;
   }
 }
