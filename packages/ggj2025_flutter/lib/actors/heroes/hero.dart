@@ -1,52 +1,47 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flutter/services.dart';
+import 'package:ggj2025_flutter/actors/heroes/blue_hero.dart';
+import 'package:ggj2025_flutter/actors/heroes/pink_hero.dart';
+import 'package:ggj2025_flutter/actors/heroes/white_hero.dart';
 import 'package:ggj2025_flutter/game.dart';
-import 'package:ggj2025_flutter/gfx_assets.dart';
 
 enum HeroState { idle, walk, attack1, attack2 }
 
 enum HeroType { blue, white, pink }
 
-class Hero extends SpriteAnimationGroupComponent<HeroState>
+abstract class Hero extends SpriteAnimationGroupComponent<HeroState>
     with HasGameReference<GGJ25Game> {
   final HeroType heroType;
   final HeroState? initialState;
+  final Map<HeroState, String> animationAssets;
 
-  Hero({required super.position, required this.heroType, this.initialState})
-      : super(size: Vector2.all(64), anchor: Anchor.center);
+  factory Hero._blue(Vector2 position) => BlueHero(position: position);
+  factory Hero._white(Vector2 position) => WhiteHero(position: position);
+  factory Hero._pink(Vector2 position) => PinkHero(position: position);
+
+  static Map<HeroType, Hero Function(Vector2)> heroFactories = {
+    HeroType.blue: Hero._blue,
+    HeroType.white: Hero._white,
+    HeroType.pink: Hero._pink,
+  };
+
+  Hero({
+    required super.position,
+    required this.heroType,
+    this.initialState,
+    required this.animationAssets,
+  }) : super(size: Vector2.all(64), anchor: Anchor.center);
 
   @override
   Future<void> onLoad() async {
-    _loadAnimations();
+    loadAnimations();
     add(CircleHitbox());
   }
 
-  static Map<HeroState, Map<HeroType, String>> animationsMap = {
-    HeroState.idle: {
-      HeroType.blue: GfxAssets.hero1Idle,
-      HeroType.white: GfxAssets.hero2Idle,
-      HeroType.pink: GfxAssets.hero3Idle,
-    },
-    HeroState.walk: {
-      HeroType.blue: GfxAssets.hero1IWalk,
-      HeroType.white: GfxAssets.hero2Walk,
-      HeroType.pink: GfxAssets.hero3Walk,
-    },
-    HeroState.attack1: {
-      HeroType.blue: GfxAssets.hero1IAttack1,
-      HeroType.white: GfxAssets.hero2Attack1,
-      HeroType.pink: GfxAssets.hero3Attack1,
-    },
-    HeroState.attack2: {
-      HeroType.blue: GfxAssets.hero1IAttack2,
-      HeroType.white: GfxAssets.hero2Attack2,
-      HeroType.pink: GfxAssets.hero3Attack2,
-    },
-  };
-
-  _loadAnimations() {
+  loadAnimations() {
     final idleAnimation = SpriteAnimation.fromFrameData(
-      game.images.fromCache(animationsMap[HeroState.idle]![heroType]!),
+      game.images.fromCache(animationAssets[HeroState.idle]!),
       SpriteAnimationData.sequenced(
         amount: 4,
         stepTime: .2,
@@ -56,7 +51,7 @@ class Hero extends SpriteAnimationGroupComponent<HeroState>
     );
 
     final walkAnimation = SpriteAnimation.fromFrameData(
-      game.images.fromCache(animationsMap[HeroState.walk]![heroType]!),
+      game.images.fromCache(animationAssets[HeroState.walk]!),
       SpriteAnimationData.sequenced(
         amount: 6,
         stepTime: .2,
@@ -66,7 +61,7 @@ class Hero extends SpriteAnimationGroupComponent<HeroState>
     );
 
     final attack1Animation = SpriteAnimation.fromFrameData(
-      game.images.fromCache(animationsMap[HeroState.attack1]![heroType]!),
+      game.images.fromCache(animationAssets[HeroState.attack1]!),
       SpriteAnimationData.sequenced(
         amount: 4,
         stepTime: .2,
@@ -76,7 +71,7 @@ class Hero extends SpriteAnimationGroupComponent<HeroState>
     );
 
     final attack2Animation = SpriteAnimation.fromFrameData(
-      game.images.fromCache(animationsMap[HeroState.attack2]![heroType]!),
+      game.images.fromCache(animationAssets[HeroState.attack2]!),
       SpriteAnimationData.sequenced(
         amount: 6,
         stepTime: .2,
@@ -93,5 +88,13 @@ class Hero extends SpriteAnimationGroupComponent<HeroState>
     };
 
     current = initialState ?? HeroState.idle;
+  }
+
+  void handleInput(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    // react to bongo input - override in concrete implementation
+  }
+
+  void performAction() {
+    // do sth if correct / known combo was played on bongos - override in concrete implementation
   }
 }
