@@ -6,11 +6,11 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart' hide Hero;
 import 'package:ggj2025_flutter/actors/fellowship.dart';
 import 'package:ggj2025_flutter/actors/heroes/hero.dart';
+import 'package:ggj2025_flutter/config/config_manager.dart';
 import 'package:ggj2025_flutter/gfx_assets.dart';
 import 'package:ggj2025_flutter/objects/ground.dart';
 import 'package:ggj2025_flutter/sfx_assets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:ggj2025_flutter/Combos/DoggoComboHandler.dart';
 
 class GGJ25GameWidget extends StatelessWidget {
@@ -27,6 +27,8 @@ class GGJ25GameWidget extends StatelessWidget {
 class GGJ25Game extends FlameGame with KeyboardEvents {
   late final ParallaxComponent parallaxComponent;
   final DoggoComboHandler doggoInputCombos = DoggoComboHandler();
+  late final ConfigManager configManager;
+  late final LevelConfig currentLevelConfig;
 
   @override
   Future<void> onLoad() async {
@@ -34,13 +36,15 @@ class GGJ25Game extends FlameGame with KeyboardEvents {
     await GfxAssets.loadAssets(this);
     GameAudioPlayer.playBackgroundMusic(SfxAssets.backgroundMusic);
 
+    configManager = ConfigManager();
+    currentLevelConfig = configManager.config.levels[1];
+
+    List<ParallaxImageData> parallaxDataList = currentLevelConfig.parallax
+        .map((parallaxLayer) => ParallaxImageData(parallaxLayer))
+        .toList();
+
     parallaxComponent = await loadParallaxComponent(
-      [
-        ParallaxImageData('background/sea_background.png'),
-        ParallaxImageData('background/farground.png'),
-        ParallaxImageData('background/mid_background.png'),
-        ParallaxImageData('background/foreground.png'),
-      ],
+      parallaxDataList,
       baseVelocity: Vector2(0, 0),
     );
     add(parallaxComponent);
