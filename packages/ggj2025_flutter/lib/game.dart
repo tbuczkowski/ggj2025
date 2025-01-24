@@ -1,8 +1,7 @@
-import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart' hide Hero;
-import 'package:ggj2025_flutter/actors/hero.dart';
+import 'package:ggj2025_flutter/actors/fellowship.dart';
 import 'package:ggj2025_flutter/gfx_assets.dart';
 import 'package:ggj2025_flutter/sfx_assets.dart';
 
@@ -24,28 +23,23 @@ class GGJ25Game extends FlameGame {
     await GfxAssets.loadAssets(this);
     GameAudioPlayer.playBackgroundMusic(SfxAssets.backgroundMusic);
 
-    add(
-      TextComponent(
-        position: Vector2(100, 100),
-        text: 'Hello, World!',
-      ),
-    );
+    // add(Hero(
+    //   position: Vector2(200, 200),
+    //   heroType: HeroType.blue,
+    //   initialState: HeroState.walk,
+    // ));
+    // add(Hero(
+    //   position: Vector2(300, 200),
+    //   heroType: HeroType.white,
+    //   initialState: HeroState.attack1,
+    // ));
+    // add(Hero(
+    //   position: Vector2(400, 200),
+    //   heroType: HeroType.pink,
+    //   initialState: HeroState.attack2,
+    // ));
 
-    add(Hero(
-      position: Vector2(200, 200),
-      heroType: HeroType.blue,
-      initialState: HeroState.walk,
-    ));
-    add(Hero(
-      position: Vector2(300, 200),
-      heroType: HeroType.white,
-      initialState: HeroState.attack1,
-    ));
-    add(Hero(
-      position: Vector2(400, 200),
-      heroType: HeroType.pink,
-      initialState: HeroState.attack2,
-    ));
+    add(Fellowship(position: Vector2.all(200)));
 
     await super.onLoad();
   }
