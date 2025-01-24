@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flame/input.dart';
 import 'package:flame/parallax.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart' hide Hero;
@@ -22,7 +23,7 @@ class GGJ25GameWidget extends StatelessWidget {
   }
 }
 
-class GGJ25Game extends FlameGame {
+class GGJ25Game extends FlameGame with KeyboardEvents {
   late final ParallaxComponent parallaxComponent;
   final DoggoComboHandler doggoInputCombos = DoggoComboHandler();
 
