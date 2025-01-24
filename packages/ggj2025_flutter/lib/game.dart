@@ -1,4 +1,6 @@
+import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flame/parallax.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart' hide Hero;
 import 'package:ggj2025_flutter/actors/fellowship.dart';
@@ -17,29 +19,32 @@ class GGJ25GameWidget extends StatelessWidget {
 }
 
 class GGJ25Game extends FlameGame {
+  late final ParallaxComponent parallaxComponent;
+
   @override
   Future<void> onLoad() async {
     FlameAudio.bgm.initialize();
     await GfxAssets.loadAssets(this);
     GameAudioPlayer.playBackgroundMusic(SfxAssets.backgroundMusic);
 
-    // add(Hero(
-    //   position: Vector2(200, 200),
-    //   heroType: HeroType.blue,
-    //   initialState: HeroState.walk,
-    // ));
-    // add(Hero(
-    //   position: Vector2(300, 200),
-    //   heroType: HeroType.white,
-    //   initialState: HeroState.attack1,
-    // ));
-    // add(Hero(
-    //   position: Vector2(400, 200),
-    //   heroType: HeroType.pink,
-    //   initialState: HeroState.attack2,
+    parallaxComponent = await loadParallaxComponent(
+      [
+        ParallaxImageData('background/sea_background.png'),
+        ParallaxImageData('background/farground.png'),
+        ParallaxImageData('background/mid_background.png'),
+        ParallaxImageData('background/foreground.png'),
+      ],
+      baseVelocity: Vector2(0, 0),
+    );
+    add(parallaxComponent);
+
+    // add(RectangleComponent(
+    //   paint: Paint()..color = Colors.yellow,
+    //   position: Vector2(0, 660),
+    //   size: Vector2(1600, 100),
     // ));
 
-    add(Fellowship(position: Vector2.all(200)));
+    add(Fellowship(position: Vector2(100, 625)));
 
     await super.onLoad();
   }
