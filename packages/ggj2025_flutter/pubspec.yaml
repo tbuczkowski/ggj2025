@@ -23,6 +23,7 @@ flutter:
 
   assets:
     - assets/audio/
+    - assets/images/
     - assets/images/background/
     - assets/images/heroes/Dude_Monster/
     - assets/images/heroes/Owlet_Monster/

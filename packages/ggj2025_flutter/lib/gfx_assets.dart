@@ -17,6 +17,8 @@ class GfxAssets {
   static const String hero2Attack2 = 'heroes/Owlet_Monster/Owlet_Monster_Attack2_6.png';
   static const String hero3Attack2 = 'heroes/Pink_Monster/Pink_Monster_Attack2_6.png';
 
+  static const String tilemap = 'tilemap_16x16.png';
+
   static Future<void> loadAssets(FlameGame gameRef) => gameRef.images.loadAll([
         hero1Idle,
         hero2Idle,
@@ -30,5 +32,6 @@ class GfxAssets {
         hero1IAttack2,
         hero2Attack2,
         hero3Attack2,
+        tilemap,
       ]);
 }

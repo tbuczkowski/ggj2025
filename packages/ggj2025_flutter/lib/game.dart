@@ -5,6 +5,7 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart' hide Hero;
 import 'package:ggj2025_flutter/actors/fellowship.dart';
 import 'package:ggj2025_flutter/gfx_assets.dart';
+import 'package:ggj2025_flutter/objects/ground.dart';
 import 'package:ggj2025_flutter/sfx_assets.dart';
 
 class GGJ25GameWidget extends StatelessWidget {
@@ -38,11 +39,7 @@ class GGJ25Game extends FlameGame {
     );
     add(parallaxComponent);
 
-    // add(RectangleComponent(
-    //   paint: Paint()..color = Colors.yellow,
-    //   position: Vector2(0, 660),
-    //   size: Vector2(1600, 100),
-    // ));
+    add(Ground(position: Vector2(0, 675)));
 
     add(Fellowship(position: Vector2(100, 625)));
 
