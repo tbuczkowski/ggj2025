@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   flame: ^1.23.0
+  flame_audio: 2.10.7
   flutter:
     sdk: flutter
   flutter_libserialport: ^0.4.0
@@ -21,6 +22,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/audio/
     - assets/images/heroes/Dude_Monster/
     - assets/images/heroes/Owlet_Monster/
     - assets/images/heroes/Pink_Monster/

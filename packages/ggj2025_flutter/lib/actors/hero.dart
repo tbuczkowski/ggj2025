@@ -4,11 +4,11 @@ import 'package:ggj2025_flutter/game.dart';
 import 'package:ggj2025_flutter/gfx_assets.dart';
 
 enum HeroState { idle }
+
 enum HeroType { blue, white, pink }
 
 class Hero extends SpriteAnimationGroupComponent<HeroState>
     with HasGameReference<GGJ25Game> {
-
   final HeroType heroType;
 
   Hero({required super.position, required this.heroType})
@@ -34,9 +34,6 @@ class Hero extends SpriteAnimationGroupComponent<HeroState>
   };
 
   _loadAnimations() {
-
-
-
     final idleAnimation = SpriteAnimation.fromFrameData(
       game.images.fromCache(animationsMap[HeroState.idle]![heroType]!),
       SpriteAnimationData.sequenced(
