@@ -30,9 +30,23 @@ class GGJ25Game extends FlameGame {
         text: 'Hello, World!',
       ),
     );
-    add(Hero(position: Vector2(200, 200), heroType: HeroType.blue));
-    add(Hero(position: Vector2(300, 200), heroType: HeroType.white));
-    add(Hero(position: Vector2(400, 200), heroType: HeroType.pink));
+
+    add(Hero(
+      position: Vector2(200, 200),
+      heroType: HeroType.blue,
+      initialState: HeroState.walk,
+    ));
+    add(Hero(
+      position: Vector2(300, 200),
+      heroType: HeroType.white,
+      initialState: HeroState.attack1,
+    ));
+    add(Hero(
+      position: Vector2(400, 200),
+      heroType: HeroType.pink,
+      initialState: HeroState.attack2,
+    ));
+
     await super.onLoad();
   }
 }
