@@ -12,6 +12,7 @@ import 'package:ggj2025_flutter/actors/heroes/hero.dart';
 import 'package:ggj2025_flutter/config/config_manager.dart';
 import 'package:ggj2025_flutter/gfx_assets.dart';
 import 'package:ggj2025_flutter/objects/ground.dart';
+import 'package:ggj2025_flutter/objects/rock.dart';
 import 'package:ggj2025_flutter/sfx_assets.dart';
 
 final GGJ25Game game = GGJ25Game();
@@ -25,7 +26,7 @@ class GGJ25GameWidget extends StatelessWidget {
   }
 }
 
-class GGJ25Game extends FlameGame with KeyboardEvents {
+class GGJ25Game extends FlameGame with HasCollisionDetection, KeyboardEvents {
   late final ParallaxComponent parallaxComponent;
   final DoggoComboHandler doggoInputCombos = DoggoComboHandler();
   late final ConfigManager configManager;
@@ -40,8 +41,9 @@ class GGJ25Game extends FlameGame with KeyboardEvents {
     configManager = ConfigManager();
     currentLevelConfig = configManager.config.levels[1];
 
-    List<ParallaxImageData> parallaxDataList =
-        currentLevelConfig.parallax.map((parallaxLayer) => ParallaxImageData(parallaxLayer)).toList();
+    List<ParallaxImageData> parallaxDataList = currentLevelConfig.parallax
+        .map((parallaxLayer) => ParallaxImageData(parallaxLayer))
+        .toList();
 
     parallaxComponent = await loadParallaxComponent(
       parallaxDataList,
@@ -58,7 +60,23 @@ class GGJ25Game extends FlameGame with KeyboardEvents {
     fellowship.addHero(HeroType.white);
     fellowship.addHero(HeroType.pink);
 
+    add(Rock(position: Vector2(128, 32)));
+
     await super.onLoad();
+  }
+
+  double timeSinceLastRockDropped = 0;
+
+  @override
+  void update(double dt) {
+    if (timeSinceLastRockDropped > 5) {
+      add(Rock(position: Vector2(128, 32)));
+      timeSinceLastRockDropped = 0;
+    }
+
+    timeSinceLastRockDropped += dt;
+
+    super.update(dt);
   }
 
   TextComponent? green;

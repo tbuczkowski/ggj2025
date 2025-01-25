@@ -14,13 +14,15 @@ class Bubble extends SpriteComponent with CollisionCallbacks, HasGameReference<G
   @override
   Future<void> onLoad() async {
     sprite = Sprite(game.images.fromCache(GfxAssets.bubble));
-    add(CircleHitbox(collisionType: CollisionType.passive));
+    add(CircleHitbox());
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Missile) {
+      print('HIT! Strength left: $_strength');
       this._strength -= other.power;
+      other.removeFromParent();
     }
 
     super.onCollision(intersectionPoints, other);

@@ -21,6 +21,9 @@ class GfxAssets {
 
   static const String bubble = 'background/common/bubble.png';
 
+  static const String rock1 = 'objects/Rock1.png';
+  static const String rock2 = 'objects/Rock2.png';
+
   static Future<void> loadAssets(FlameGame gameRef) => gameRef.images.loadAll([
         hero1Idle,
         hero2Idle,
@@ -36,5 +39,7 @@ class GfxAssets {
         hero3Attack2,
         tilemap,
         bubble,
+        rock1,
+        rock2,
       ]);
 }

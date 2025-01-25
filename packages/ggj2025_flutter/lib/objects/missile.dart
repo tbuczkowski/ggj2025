@@ -22,7 +22,7 @@ class Missile extends SpriteComponent with HasGameReference<GGJ25Game> {
   Future<void> onLoad() async {
     sprite = Sprite(game.images.fromCache(spriteAsset));
 
-    add(RectangleHitbox(collisionType: CollisionType.passive));
+    add(RectangleHitbox());
   }
 
   @override
@@ -32,7 +32,7 @@ class Missile extends SpriteComponent with HasGameReference<GGJ25Game> {
       return;
     }
 
-    position.y -= speed * dt * 0.01;
+    position.y += speed * dt;
   }
 
   void playBreakingEffect() {

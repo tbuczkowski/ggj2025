@@ -13,7 +13,7 @@ class GameAudioPlayer {
       bgm.stop();
     }
 
-    bgm.play(asset, volume: 0.2);
+    bgm.play(asset, volume: 0);
   }
 
   static void playEffect(String asset) => FlameAudio.play(asset, volume: 0.2);

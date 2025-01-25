@@ -24,6 +24,7 @@ flutter:
   assets:
     - assets/audio/
     - assets/images/
+    - assets/images/objects/
     - assets/images/background/common/
     - assets/images/background/level_1/
     - assets/images/background/level_2/
