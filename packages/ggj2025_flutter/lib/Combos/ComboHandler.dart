@@ -1,27 +1,55 @@
+import 'dart:async';
 import 'dart:developer';
 
+import 'package:flame/components.dart';
+import 'package:ggj2025_flutter/actors/fellowship.dart';
 import 'package:ggj2025_flutter/actors/heroes/hero.dart';
 import 'package:ggj2025_flutter/game.dart';
 
 import 'Combo.dart';
 
-class ComboHandler {
+class ComboHandler extends Component with HasGameReference<GGJ25Game> {
+  double timeSinceLastBeat = 0;
   List<Combo> combos = _allCombos();
   int currentIndexOfHitToMatch = 0;
-  DateTime? momentOfPreviousInput = null;
   List<Combo> currentlyMatchingCombos = _allCombos();
+  bool gameIsInRhytmWindow = false;
+  late Fellowship fellowship;
 
-  void comboInput(String input, Hero hero, GGJ25Game game) {
-    var now = DateTime.now();
-    momentOfPreviousInput = momentOfPreviousInput ?? now;
-    if(!_isWithinComboMargin(now)){
+  static const double bpm = 135.0;
+  static const double timeBetweenNextPressesInDt = (1 / (bpm / 60)) * 1000000;
+  static const double beatTimeMargin = 0.05;
+  static const double marginOfTimeError = timeBetweenNextPressesInDt * beatTimeMargin;
+
+  @override
+  FutureOr<void> onLoad() {
+    fellowship = game.children.where((x) => x is Fellowship).first as Fellowship;
+    return super.onLoad();
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    timeSinceLastBeat += dt;
+    if(timeSinceLastBeat > timeBetweenNextPressesInDt + marginOfTimeError) {
+      timeSinceLastBeat -= timeBetweenNextPressesInDt;
+      gameIsInRhytmWindow = false;
+    } else if(timeSinceLastBeat > timeBetweenNextPressesInDt - marginOfTimeError) {
+      gameIsInRhytmWindow = true;
+    } else {
+      gameIsInRhytmWindow = false;
+    }
+  }
+
+  void comboInput(String input) {
+    if(!gameIsInRhytmWindow){
       _resetCombo();
     }
-    _appendToCombo(input, now);
+    _appendToCombo(input);
     if(_comboIsFinished()){
       var comboToExecute = currentlyMatchingCombos[0].ComboEffect;
       log(currentlyMatchingCombos[0].Name + ' will fire');
-      comboToExecute(hero, game);
+      comboToExecute(fellowship, game);
       _resetCombo();
     } else {
       currentIndexOfHitToMatch++;
@@ -33,8 +61,7 @@ class ComboHandler {
       currentlyMatchingCombos[0].Inputs.length == currentIndexOfHitToMatch + 1;
   }
 
-  void _appendToCombo(String input, DateTime momentofLatestInput){
-    momentOfPreviousInput = momentofLatestInput;
+  void _appendToCombo(String input){
     currentlyMatchingCombos = currentlyMatchingCombos
       .where((x) => x.Inputs[currentIndexOfHitToMatch] == input)
       .toList();
@@ -45,11 +72,6 @@ class ComboHandler {
     currentlyMatchingCombos = combos;
     currentIndexOfHitToMatch = 0;
     log('combo reset');//todo some async binding with timer based combo system instead of ad hoc time measurement?
-  }
-
-  bool _isWithinComboMargin(DateTime inputComboMoment) {
-    var timeSincePreviousInput = inputComboMoment.difference(momentOfPreviousInput!).inMilliseconds.abs();
-    return timeSincePreviousInput < 400 && timeSincePreviousInput > 100;
   }
 
   static List<Combo> _allCombos() {

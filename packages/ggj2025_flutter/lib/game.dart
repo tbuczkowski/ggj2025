@@ -6,6 +6,7 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart' hide Hero;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ggj2025_flutter/Combos/ComboHandler.dart';
 import 'package:ggj2025_flutter/actors/fellowship.dart';
 import 'package:ggj2025_flutter/actors/heroes/hero.dart';
 import 'package:ggj2025_flutter/camera_target.dart';
@@ -35,6 +36,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   late final LevelConfig currentLevelConfig;
   late final Fellowship fellowship;
   late CameraTarget _cameraTarget;
+  late final ComboHandler combo;
 
   @override
   bool get debugMode => true;
@@ -74,6 +76,8 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     }
 
     world.add(fellowship);
+    combo = ComboHandler();
+    add(combo);
 
     fellowship.addHero(HeroType.blue);
     fellowship.addHero(HeroType.white);

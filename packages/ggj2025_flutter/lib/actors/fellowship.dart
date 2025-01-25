@@ -64,7 +64,7 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
     }
 
     if(event is KeyDownEvent) {
-      inputCombos.comboInput(_comboElement(keysPressed), state.currentHero, game);
+      inputCombos.comboInput(_comboElement(keysPressed));
 
     game.parallaxComponent.parallax?.baseVelocity = Vector2(movementSpeed, 0);
     state.currentHero.handleInput(event, keysPressed);
