@@ -31,6 +31,15 @@ class GfxAssets {
 
   static const String rock1 = 'objects/Rock1.png';
   static const String rock2 = 'objects/Rock2.png';
+  static const String barrel = 'objects/Barrel.png';
+  static const String chest = 'objects/Chest.png';
+
+  static const Map<String, String> grassMap = {
+    'grass1': 'objects/Grass1.png',
+    'grass2': 'objects/Grass2.png',
+    'grass3': 'objects/Grass3.png',
+    'grass4': 'objects/Grass4.png',
+  };
 
   static const String jellyfishIdle = 'enemies/Jellyfish/Idle.png';
   static const String jellyfishWalk = 'enemies/Jellyfish/Walk.png';
@@ -86,7 +95,8 @@ class GfxAssets {
   static const String floaterKnightHurt = 'enemies/Floater_Knight/Hurt.png';
   static const String floaterKnightDeath = 'enemies/Floater_Knight/Death.png';
 
-  static Future<void> loadAssets(FlameGame gameRef) => gameRef.images.loadAll([
+  static Future<void> loadAssets(FlameGame gameRef) =>
+      gameRef.images.loadAll([
         hero1Idle,
         hero2Idle,
         hero3Idle,
@@ -103,6 +113,12 @@ class GfxAssets {
         bubble,
         rock1,
         rock2,
+        barrel,
+        chest,
+        grassMap['grass1']!,
+        grassMap['grass2']!,
+        grassMap['grass3']!,
+        grassMap['grass4']!,
         jellyfishIdle,
         jellyfishWalk,
         jellyfishAttack,

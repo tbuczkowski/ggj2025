@@ -16,6 +16,7 @@ import 'package:ggj2025_flutter/objects/rock.dart';
 import 'package:ggj2025_flutter/sfx_assets.dart';
 
 import 'actors/enemy_band.dart';
+import 'objects/grass.dart';
 
 final GGJ25Game game = GGJ25Game();
 
@@ -82,6 +83,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     fellowship.addHero(HeroType.pink);
 
     world.add(Rock(position: Vector2(128, 32)));
+    world.add(Grass(position: Vector2(128, 128), grassType: GrassType.grass1));
 
     _setupCamera();
 
