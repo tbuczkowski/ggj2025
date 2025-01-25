@@ -85,8 +85,12 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
   @override
   void update(double dt) {
     if (isDead) {
-      // TODO: heroes should start begin floating towards the "surface"
-      removeFromParent();
+      state.heroes.forEach((h) => h.die());
+      if (!children.any((c) => c is Hero)) {
+        removeFromParent();
+      }
+
+      return;
     }
 
     if (hasEnemyBandAhead()) {
@@ -112,7 +116,6 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
     actionInProgress = false;
     state.heroes.forEach((hero) => hero.current = HeroState.idle);
     state.movementSpeed = 0;
-    state.distanceTravelledSinceLastEvent = 0;
     updateParallaxVelocity();
   }
 
@@ -130,7 +133,6 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
     actionInProgress = true;
     state.heroes.forEach((hero) => hero.attack());
     state.movementSpeed = 0;
-    state.distanceTravelledSinceLastEvent = 0;
     updateParallaxVelocity();
   }
 

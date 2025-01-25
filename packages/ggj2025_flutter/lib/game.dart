@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame/parallax.dart';
@@ -55,8 +56,9 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     configManager = ConfigManager();
     currentLevelConfig = configManager.config.levels[1];
 
-    List<ParallaxImageData> parallaxDataList =
-        currentLevelConfig.parallax.map((parallaxLayer) => ParallaxImageData(parallaxLayer)).toList();
+    List<ParallaxImageData> parallaxDataList = currentLevelConfig.parallax
+        .map((parallaxLayer) => ParallaxImageData(parallaxLayer))
+        .toList();
 
     fellowship = Fellowship(
       position: Vector2(
@@ -78,6 +80,14 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
         16.0 * i,
         camera.viewport.size.y * 0.90,
       )));
+
+      if (i % 4 == 0)
+        world.add(
+          Grass(
+            position: Vector2(16.0 * i, camera.viewport.size.y * 0.90 - 90),
+            grassType: GrassType.values.random(),
+          ),
+        );
     }
 
     world.add(fellowship);
@@ -89,14 +99,9 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     fellowship.addHero(HeroType.white);
     fellowship.addHero(HeroType.pink);
 
-    world.add(Grass(
-        position: Vector2(
-          0,
-          camera.viewport.size.y * 0.90 - 90,
-        ),
-        grassType: GrassType.grass1));
-
     _setupCamera();
+
+    insertNextEvent();
 
     await super.onLoad();
   }
@@ -116,13 +121,13 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   @override
   void update(double dt) {
     _eventGenerator.updateTimeSinceLastEvent(dt);
-    // _eventGenerator.addRandomRockAppearsEvent(world);
-
-    if (_eventGenerator.shouldGenerateFightEvent(fellowship.state)) {
-      _eventGenerator.addEventToScene(world, fellowship);
-    }
+    _eventGenerator.addRandomRockAppearsEvent(world);
 
     super.update(dt);
+  }
+
+  void insertNextEvent() {
+    _eventGenerator.addEventToScene(world, fellowship);
   }
 
   TextComponent? green;

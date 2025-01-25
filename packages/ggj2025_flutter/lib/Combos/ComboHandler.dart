@@ -22,7 +22,7 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
   // bool noteAlraedyHitInTHisBit = false;
   late Fellowship fellowship;
 
-  static const double bpm = 120.0;
+  static const double bpm = 110.0;
   static const double timeBetweenNextPresses = (1 / (bpm / 60));
   static const double beatTimeMargin = 0.3;
   static const double marginOfTimeError = timeBetweenNextPresses * beatTimeMargin;
