@@ -33,12 +33,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   final DoggoComboHandler doggoInputCombos = DoggoComboHandler();
   late final ConfigManager configManager;
   late final LevelConfig currentLevelConfig;
-  late final Fellowship fellowship = Fellowship(
-    position: Vector2(
-      0,
-      camera.viewport.size.y * 0.90 - 122,
-    ),
-  );
+  late final Fellowship fellowship;
   late CameraTarget _cameraTarget;
 
   @override
@@ -56,6 +51,13 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     List<ParallaxImageData> parallaxDataList =
         currentLevelConfig.parallax.map((parallaxLayer) => ParallaxImageData(parallaxLayer)).toList();
 
+    fellowship = Fellowship(
+      position: Vector2(
+        0,
+        camera.viewport.size.y * 0.90 - 122,
+      ),
+    );
+
     parallaxComponent = await loadParallaxComponent(
       parallaxDataList,
       baseVelocity: Vector2(fellowship.movementSpeed, 0),
@@ -63,16 +65,14 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     );
     add(parallaxComponent);
 
-    for (int i = 0; i < 100; i++) {
-      add(Ground(
+    for (int i = -10; i < 100; i++) {
+      world.add(Ground(
           position: Vector2(
         16.0 * i,
         camera.viewport.size.y * 0.90,
       )));
     }
 
-    add(fellowship);
-    world.add(Ground(position: Vector2(0, 675)));
     world.add(fellowship);
 
     fellowship.addHero(HeroType.blue);
@@ -92,11 +92,11 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   }
 
   void _setupCamera() {
-    _cameraTarget = CameraTarget(target: fellowship);
+    _cameraTarget = CameraTarget(target: fellowship, position: Vector2(300, 0));
     world.add(_cameraTarget);
     camera.viewfinder.position = fellowship.position;
-    camera.follow(_cameraTarget, maxSpeed: 200);
-    camera.viewfinder.anchor = Anchor.center;
+    camera.follow(_cameraTarget, maxSpeed: 200, snap: true);
+    camera.viewfinder.anchor = Anchor(0.1, 0.5);
   }
 
   double timeSinceLastRockDropped = 0;
