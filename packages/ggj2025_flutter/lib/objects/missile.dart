@@ -65,8 +65,7 @@ class Missile extends SpriteAnimationGroupComponent<bool> with HasGameReference<
       playBreakingEffect();
       return;
     }
-
-    position.y += speed * dt;
+    if (isActive) position.y += speed * dt;
   }
 
   void playBreakingEffect() {
