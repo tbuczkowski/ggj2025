@@ -9,8 +9,7 @@ class EventGenerator {
 
   void updateTimeSinceLastEvent(double dt) => timeSinceLastEvent += dt;
 
-  bool shouldGenerateFightEvent(FellowshipState state) =>
-      state.distanceTravelledSinceLastEvent >= 500;
+  bool shouldGenerateFightEvent(FellowshipState state) => state.distanceTravelledSinceLastEvent >= 500;
 
   void addRandomRockAppearsEvent(World world) {
     if (timeSinceLastEvent > 50) {

@@ -23,7 +23,10 @@ class GGJ25GameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GameWidget(game: game);
+    return Focus(
+      onKey: (focus, onKey) => KeyEventResult.handled,
+      child: GameWidget(game: game),
+    );
   }
 }
 

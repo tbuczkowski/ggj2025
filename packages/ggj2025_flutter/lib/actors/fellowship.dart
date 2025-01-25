@@ -70,7 +70,7 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
       state.currentHero.handleInput(event, keysPressed);
     }
 
-    return super.onKeyEvent(event, keysPressed);
+    return true;
   }
 
   String _comboElement(Set<LogicalKeyboardKey> keysPressed) {
