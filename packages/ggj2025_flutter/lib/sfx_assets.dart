@@ -9,6 +9,7 @@ sealed class SfxAssets {
   static const String bongo4 = 'bongo2.wav';
   static const String fail1 = 'fail1.wav';
   static const String fail2 = 'fail2.wav';
+  static const String chop = 'chop1.wav';
   static const String bounce1 = 'Bounce_Back_1.wav';
   static const String bounce2 = 'Bounce_Back_2.wav';
   static const String bounce3 = 'Bounce_Back_3.wav';

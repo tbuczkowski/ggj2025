@@ -17,11 +17,11 @@ class Combo {
 }
 
 sealed class Combos {
-  static final Combo tripleBork = Combo(["bork", "bork", "bork"], "bork overdrive", (game) {
+  static final Combo tripleBork = Combo(["bork", "bork", "bork", "bonk"], "bork overdrive", (game) {
     game.world.add(IceMissile(position: game.fellowship.position));
     game.fellowship.attack();
   });
-  static final Combo borkBonk = Combo(["bork", "bonk"], "reinforced bonk", (game) {
+  static final Combo borkBonk = Combo(["bork", "bonk", "bork", "bonk"], "reinforced bonk", (game) {
     game.world.add(Thunderstrike(position: game.fellowship.position));
     game.fellowship.attack();
   });

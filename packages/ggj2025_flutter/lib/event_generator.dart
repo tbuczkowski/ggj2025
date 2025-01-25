@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame/components.dart';
 import 'package:ggj2025_flutter/actors/enemy_band.dart';
 import 'package:ggj2025_flutter/actors/fellowship.dart';
@@ -19,10 +21,10 @@ class EventGenerator {
   }
 
   void addEventToScene(World world, Fellowship fellowship) {
-    fellowship.stopWalking();
+    // fellowship.stopWalking();
     world.add(EnemyBand.randomBand(
       position: Vector2(fellowship.position.x + 1000, fellowship.position.y),
-      bandSize: 3,
+      bandSize: Random().nextInt(3) + 1,
     ));
   }
 }

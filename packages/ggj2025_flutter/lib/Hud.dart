@@ -32,21 +32,13 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
       scale: Vector2(1.5, 3),
     );
     bars = [
-      for (int i = 0; i < 4; i++)
+      for (int i = 0; i < 8; i++)
         SpriteComponent(
           sprite: Sprite(game.images.fromCache(GfxAssets.rock2)),
           position: Vector2(i * 100, 0),
           size: Vector2.all(12),
           anchor: Anchor.center,
           scale: Vector2(1, 8),
-        ),
-      for (int i = 0; i < 4; i++)
-        SpriteComponent(
-          sprite: Sprite(game.images.fromCache(GfxAssets.rock2)),
-          position: Vector2(i * 100, 0),
-          size: Vector2.all(12),
-          anchor: Anchor.center,
-          scale: Vector2(1, 2),
         ),
     ];
     // bar = SpriteComponent(
@@ -66,7 +58,7 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
   @override
   void update(double dt) {
     time += dt;
-    print(game.combo.time % ComboHandler.timeBetweenNextPresses);
+    //print(game.combo.time % ComboHandler.timeBetweenNextPresses);
     if ((game.combo.time % ComboHandler.timeBetweenNextPresses) - 0.1 < 0.2) {
       rhytmIndicator.size = Vector2(24, 48);
       // rhytmIndicator.size = Vector2.all(0)
@@ -84,6 +76,7 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
     for (var i = 0; i < bars.length; i++) {
       final tempo = ((time - divider * i) % travelTime) / travelTime;
       final bar = bars[i];
+      bar.scale = game.fellowship.actionInProgress ? Vector2(1, 4) : Vector2(1, 8);
       bar.position = Vector2(bars.length * 100 - tempo * bars.length * 100 + 20, 12);
       if (bar.position.x < 0) {
         bar.position = Vector2(bars.length * 100, 12);

@@ -13,6 +13,8 @@ class Missile extends SpriteAnimationGroupComponent<bool> with HasGameReference<
   final bool canHurtPlayer;
   final SpriteAnimationData? flyAnimationData;
 
+  final double? lifetime;
+
   late double currentPower;
 
   bool isActive = true;
@@ -25,7 +27,10 @@ class Missile extends SpriteAnimationGroupComponent<bool> with HasGameReference<
     this.flyAnimationData,
     super.position,
     super.size,
+    this.lifetime = double.infinity,
   }) : super(anchor: Anchor.center);
+
+  void onHit() {}
 
   @override
   Future<void> onLoad() async {
@@ -35,12 +40,13 @@ class Missile extends SpriteAnimationGroupComponent<bool> with HasGameReference<
 
     final idleAnimation = SpriteAnimation.fromFrameData(
       game.images.fromCache(spriteAsset),
-      flyAnimationData ?? SpriteAnimationData.sequenced(
-        amount: 1,
-        stepTime: 1,
-        textureSize: Vector2.all(8),
-        texturePosition: Vector2.all(0.0),
-      ),
+      flyAnimationData ??
+          SpriteAnimationData.sequenced(
+            amount: 1,
+            stepTime: 1,
+            textureSize: Vector2.all(8),
+            texturePosition: Vector2.all(0.0),
+          ),
     );
 
     final walkAnimation = SpriteAnimation.fromFrameData(
@@ -66,10 +72,13 @@ class Missile extends SpriteAnimationGroupComponent<bool> with HasGameReference<
     add(RectangleHitbox());
   }
 
+  double time = 0;
+
   @override
   void update(double dt) {
     super.update(dt);
-    if (position.y > game.size.y + size.y || currentPower <= 0) {
+    time += dt;
+    if (position.y > game.size.y + size.y || currentPower <= 0 || time > lifetime!) {
       playBreakingEffect();
       return;
     }
@@ -82,6 +91,7 @@ class Missile extends SpriteAnimationGroupComponent<bool> with HasGameReference<
   void playBreakingEffect() {
     isActive = false;
     current = isActive;
+    onHit.call();
     size = size * 3;
     add(SequenceEffect([
       ColorEffect(Colors.white, EffectController(duration: 1.2), opacityFrom: 0, opacityTo: 1),
@@ -92,5 +102,3 @@ class Missile extends SpriteAnimationGroupComponent<bool> with HasGameReference<
     currentPower -= value;
   }
 }
-
-

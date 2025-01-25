@@ -37,26 +37,29 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
     time += dt;
     timeSinceLastBeat += dt;
     if (timeSinceLastBeat > timeBetweenNextPresses + marginOfTimeError) {
-      log('Outside rhythm window (1)');
+      // log('Outside rhythm window (1)');
       timeSinceLastBeat -= timeBetweenNextPresses;
       gameIsInRhytmWindow = false;
       // noteAlraedyHitInTHisBit = false;
     } else if (timeSinceLastBeat > timeBetweenNextPresses - marginOfTimeError) {
       if (!gameIsInRhytmWindow) GameAudioPlayer.playEffect(SfxAssets.metro, 0.03);
-      log('In rhythm!');
+      //log('In rhythm!');
       gameIsInRhytmWindow = true;
     } else {
-      log('Outside rhythm window (2)');
+      //log('Outside rhythm window (2)');
       gameIsInRhytmWindow = false;
     }
   }
 
   void comboInput(String input) {
-    log(gameIsInRhytmWindow.toString());
+    //log(gameIsInRhytmWindow.toString());
 
-    print(timeBetweenNextPresses);
-    print(time % timeBetweenNextPresses);
-
+    //print(timeBetweenNextPresses);
+    //print(time % timeBetweenNextPresses);
+    if (game.fellowship.actionInProgress) {
+      GameAudioPlayer.playEffect(SfxAssets.chop);
+      return;
+    }
     if (!gameIsInRhytmWindow) {
       _resetCombo();
       (switch (input) {
@@ -88,17 +91,24 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
 
   void _appendToCombo(String input) {
     currentComboState.add(input);
-    currentlyMatchingCombos =
-        currentlyMatchingCombos.where((c) => c.inputs.join().startsWith(currentComboState.join())).toList();
-
-    if (currentlyMatchingCombos.length == 0) {
-      log('Nothing matches, reset');
-      _resetCombo();
+    if (currentComboState.length > 4) {
+      currentComboState.removeAt(0);
     }
+    currentlyMatchingCombos = [...Combos.all].where(
+      (c) {
+        print((c.inputs.join(), currentComboState.join()));
+        return c.inputs.join() == currentComboState.join();
+      },
+    ).toList();
+
+    // if (currentlyMatchingCombos.length == 0) {
+    //   log('Nothing matches, reset');
+    //   _resetCombo();
+    // }
 
     // currentlyMatchingCombos =
     //     currentlyMatchingCombos.where((x) => x.inputs[currentIndexOfHitToMatch] == input).toList();
-    log(input + ' was pressed, that\'s note with index #' + currentIndexOfHitToMatch.toString());
+    // log(input + ' was pressed, that\'s note with index #' + currentIndexOfHitToMatch.toString());
     log('Current streak: ${currentComboState.join('|')}');
   }
 

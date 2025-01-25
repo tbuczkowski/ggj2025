@@ -6,7 +6,7 @@ class Thunderstrike extends Missile {
   Thunderstrike({required super.position})
       : super(
           power: 50.0,
-          speed: Vector2(100.0, 0),
+          speed: Vector2(200.0, 0),
           spriteAsset: GfxAssets.thunderstrike,
           flyAnimationData: SpriteAnimationData.sequenced(
             amount: 13,
@@ -15,5 +15,11 @@ class Thunderstrike extends Missile {
           ),
           canHurtPlayer: false,
           size: Vector2.all(128.0),
+          lifetime: 5,
         );
+
+  @override
+  void onHit() {
+    game.fellowship.finishAttack();
+  }
 }

@@ -1,11 +1,8 @@
 import 'dart:math';
 
-import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/geometry.dart';
 import 'package:flutter/services.dart';
 import 'package:ggj2025_flutter/Combos/ComboHandler.dart';
-import 'package:ggj2025_flutter/actors/enemy/enemy.dart';
 import 'package:ggj2025_flutter/actors/enemy_band.dart';
 import 'package:ggj2025_flutter/actors/heroes/hero.dart';
 import 'package:ggj2025_flutter/game.dart';
@@ -20,6 +17,8 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
   late ComboHandler combos;
 
   late Bubble bubble;
+
+  bool actionInProgress = false;
 
   // late PositionComponent cameraTarget;
 
@@ -89,10 +88,9 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
       // TODO: heroes should start begin floating towards the "surface"
       removeFromParent();
     }
-    
-    if (state.movementSpeed == 0 && !hasEnemyBandAhead()) {
-      startWalking();
-      return;
+
+    if (hasEnemyBandAhead()) {
+      stopWalking();
     }
 
     double distanceWalked = dt * state.movementSpeed;
@@ -103,6 +101,7 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
   bool get isDead => !children.any((e) => e is Bubble);
 
   void stopWalking() {
+    actionInProgress = false;
     state.heroes.forEach((hero) => hero.current = HeroState.idle);
     state.movementSpeed = 0;
     state.distanceTravelledSinceLastEvent = 0;
@@ -110,20 +109,26 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
   }
 
   void startWalking([int direction = 1]) {
+    actionInProgress = true;
     state.heroes.forEach((hero) => hero.current = HeroState.walk);
     state.movementSpeed = direction * maxMovementSpeed;
     updateParallaxVelocity();
   }
 
   void attack() {
+    actionInProgress = true;
     state.heroes.forEach((hero) => hero.attack());
     state.movementSpeed = 0;
     state.distanceTravelledSinceLastEvent = 0;
     updateParallaxVelocity();
   }
 
-  void updateParallaxVelocity() =>
-      game.parallaxComponent.parallax?.baseVelocity = Vector2(state.movementSpeed, 0);
+  void finishAttack() {
+    actionInProgress = false;
+  }
 
-  bool hasEnemyBandAhead() => game.world.children.any((c) => c is EnemyBand);
+  void updateParallaxVelocity() => game.parallaxComponent.parallax?.baseVelocity = Vector2(state.movementSpeed, 0);
+
+  bool hasEnemyBandAhead() =>
+      game.world.children.where((c) => c is EnemyBand && c.position.x - position.x < 300).isNotEmpty;
 }

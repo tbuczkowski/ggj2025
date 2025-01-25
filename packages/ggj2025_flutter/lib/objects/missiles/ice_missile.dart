@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:ggj2025_flutter/game.dart';
 import 'package:ggj2025_flutter/gfx_assets.dart';
 import 'package:ggj2025_flutter/objects/missile.dart';
 
@@ -6,7 +7,7 @@ class IceMissile extends Missile {
   IceMissile({super.position})
       : super(
           power: 20,
-          speed: Vector2(100.0, 0),
+          speed: Vector2(400.0, 0),
           spriteAsset: GfxAssets.iceMissileFlying,
           flyAnimationData: SpriteAnimationData.sequenced(
             amount: 10,
@@ -14,5 +15,11 @@ class IceMissile extends Missile {
             textureSize: Vector2(48, 32),
           ),
           canHurtPlayer: false,
+          lifetime: 1.5,
         );
+
+  @override
+  void onHit() {
+    game.fellowship.finishAttack();
+  }
 }
