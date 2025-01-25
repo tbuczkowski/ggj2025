@@ -23,7 +23,7 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
 
   @override
   FutureOr<void> onLoad() {
-    fellowship = game.children.where((x) => x is Fellowship).first as Fellowship;
+    fellowship = game.fellowship;
     return super.onLoad();
   }
 

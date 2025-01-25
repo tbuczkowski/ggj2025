@@ -35,7 +35,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   late final LevelConfig currentLevelConfig;
   late final Fellowship fellowship;
   late CameraTarget _cameraTarget;
-  late final ComboHandler combo;
+  late final ComboHandler combo = ComboHandler();
 
   @override
   bool get debugMode => true;
@@ -75,7 +75,6 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     }
 
     world.add(fellowship);
-    combo = ComboHandler();
     add(combo);
 
     fellowship.addHero(HeroType.blue);

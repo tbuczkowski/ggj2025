@@ -29,7 +29,7 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
   @override
   Future<void> onLoad() async {
     addHero(HeroType.blue);
-    combos = game.children.where((x) => x is ComboHandler).first as ComboHandler;
+    combos = game.combo;
     add(bubble = Bubble(position: Vector2(0, 0), size: Vector2.all(0.0)));
 
     // game.world.add(cameraTarget = PositionComponent(position: Vector2(400, 450)));
@@ -66,10 +66,13 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
     }
 
     if(event is KeyDownEvent) {
-      inputCombos.comboInput(_comboElement(keysPressed));
+      combos.comboInput(_comboElement(keysPressed));
 
-    game.parallaxComponent.parallax?.baseVelocity = Vector2(movementSpeed, 0);
-    state.currentHero.handleInput(event, keysPressed);
+      game.parallaxComponent.parallax?.baseVelocity = Vector2(movementSpeed, 0);
+      state.currentHero.handleInput(event, keysPressed);
+    }
+
+    return super.onKeyEvent(event, keysPressed);
   }
 
   String _comboElement(Set<LogicalKeyboardKey> keysPressed){
