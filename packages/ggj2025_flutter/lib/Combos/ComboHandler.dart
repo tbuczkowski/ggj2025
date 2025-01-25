@@ -17,6 +17,8 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
   List<String> currentComboState = [];
   bool playSounds = false;
 
+  double timeSinceLastComboInput = 0;
+
   // bool noteAlraedyHitInTHisBit = false;
   late Fellowship fellowship;
 
@@ -36,6 +38,10 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
     super.update(dt);
     time += dt;
     timeSinceLastBeat += dt;
+    timeSinceLastComboInput += dt;
+    if (timeSinceLastComboInput > timeBetweenNextPresses + marginOfTimeError) {
+      _resetCombo();
+    }
     if (timeSinceLastBeat > timeBetweenNextPresses + marginOfTimeError) {
       // log('Outside rhythm window (1)');
       timeSinceLastBeat -= timeBetweenNextPresses;
@@ -53,7 +59,7 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
 
   void comboInput(String input) {
     //log(gameIsInRhytmWindow.toString());
-
+    timeSinceLastComboInput = 0;
     // print(timeBetweenNextPresses);
     //print(time % timeBetweenNextPresses);
     if (game.fellowship.actionInProgress) {
@@ -97,7 +103,6 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
     }
     currentlyMatchingCombos = [...Combos.all].where(
       (c) {
-        print((c.inputs.join(), currentComboState.join()));
         return c.inputs.join() == currentComboState.join();
       },
     ).toList();

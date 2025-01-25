@@ -93,6 +93,14 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
       stopWalking();
     }
 
+    if (startedWalking != null) {
+      startedWalking = startedWalking! + dt;
+      if (startedWalking! > 2) {
+        startedWalking = null;
+        stopWalking();
+      }
+    }
+
     double distanceWalked = dt * state.movementSpeed;
     position.x += distanceWalked;
     state.distanceTravelledSinceLastEvent += distanceWalked;
@@ -108,7 +116,10 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
     updateParallaxVelocity();
   }
 
+  double? startedWalking;
+
   void startWalking([int direction = 1]) {
+    startedWalking = 0;
     actionInProgress = true;
     state.heroes.forEach((hero) => hero.current = HeroState.walk);
     state.movementSpeed = direction * maxMovementSpeed;

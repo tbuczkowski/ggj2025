@@ -15,7 +15,7 @@ class IceMissile extends Missile {
             textureSize: Vector2(48, 32),
           ),
           canHurtPlayer: false,
-          lifetime: 1.5,
+          lifetime: 2,
         );
 
   @override

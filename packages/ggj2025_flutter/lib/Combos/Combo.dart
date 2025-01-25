@@ -17,7 +17,7 @@ class Combo {
 }
 
 sealed class Combos {
-  static final Combo tripleBork = Combo(["bork", "bork", "bork", "bonk"], "bork overdrive", (game) {
+  static final Combo tripleBork = Combo(["bonk", "bonk", "bork", "bork"], "bork overdrive", (game) {
     game.world.add(IceMissile(position: game.fellowship.position));
     game.fellowship.attack();
   });
@@ -26,11 +26,13 @@ sealed class Combos {
     game.fellowship.attack();
   });
   static final Combo defenceBonk =
-      Combo(['bonk', 'bonk'], 'bonk defence', (game) => game.fellowship.buffDefence());
+      Combo(['bonk', 'bonk', 'bonk', 'bonk'], 'bonk defence', (game) => game.fellowship.buffDefence());
+  static final Combo move = Combo(["bork", "bork", "bonk", "bork"], 'move', (game) => game.fellowship.startWalking());
 
   static List<Combo> get all => [
         tripleBork,
         borkBonk,
         defenceBonk,
+        move,
       ];
 }
