@@ -51,20 +51,32 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> initPorts() async {
-    // port = SerialPort('/dev/cu.usbmodem11101');
-    // port.openReadWrite();
-    // // this reboots the python program running on rpi
-    // port.write(Uint8List.fromList('\x03\x04'.codeUnits));
-    // await Future.delayed(const Duration(seconds: 1));
-    // reader = SerialPortReader(port)
-    //   ..stream.listen((data) {
-    //     final String dataString = String.fromCharCodes(data).replaceAll(RegExp(r"\s+"), '');
-    //     if (dataString.isEmpty) {
-    //       return;
-    //     }
-    //     receivedData.add((SerialMessageType.incoming, dataString));
-    //     setState(() {});
-    //   });
+    port = SerialPort('/dev/cu.usbmodem11201');
+    port.openReadWrite();
+    // this reboots the python program running on rpi
+    port.write(Uint8List.fromList('\x03\x04'.codeUnits));
+    await Future.delayed(const Duration(seconds: 1));
+    reader = SerialPortReader(port)
+      ..stream.listen((data) {
+        final String dataString = String.fromCharCodes(data).replaceAll(RegExp(r"\s+"), '');
+        if (dataString.isEmpty) {
+          return;
+        }
+        // receivedData.add((SerialMessageType.incoming, dataString));
+        if (dataString == 'greenOn') {
+          game.greenButtonOn();
+        }
+        if (dataString == 'greenOff') {
+          game.greenButtonOff();
+        }
+        if (dataString == 'redOn') {
+          game.redButtonOn();
+        }
+        if (dataString == 'redOff') {
+          game.redButtonOff();
+        }
+        // setState(() {});
+      });
   }
 
   @override
