@@ -109,7 +109,7 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
       var indexOfComboList = matchingCombos.indexOf(combo).toDouble();
       var text = TextComponent(
         text: combo.name + ':',
-        position: Vector2(100 - gameRef.camera.viewport.size.x / 2, 550 + 60 * indexOfComboList),
+        position: Vector2(100 - gameRef.camera.viewport.size.x / 2, gameRef.camera.viewport.size.y - 100 - 60 * indexOfComboList),
         size: Vector2(20, 20),
         anchor: Anchor.center,
         scale: Vector2(1, 1)
@@ -120,7 +120,7 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
         if(indexWhereToStartDisplayingCombo > indexOfInput) return;
           var inputUiPosition = Vector2(
           210 + (indexOfInput - indexWhereToStartDisplayingCombo) * 40 - gameRef.camera.viewport.size.x / 2,
-          550 + 60 * indexOfComboList);
+          gameRef.camera.viewport.size.y - 100 - 60 * indexOfComboList);
         var spriteToAdd = SpriteComponent(
           sprite: _spritePathForButton(button),
           position: inputUiPosition,
