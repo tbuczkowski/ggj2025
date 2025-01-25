@@ -7,9 +7,13 @@ import 'package:ggj2025_flutter/gfx_assets.dart';
 
 /// Base class for all things that will be tossed by fellowship / enemy bands
 class Missile extends SpriteAnimationGroupComponent<bool> with HasGameReference<GGJ25Game> {
-  final int power;
+  final double power;
   final String spriteAsset;
-  final double speed;
+  final Vector2 speed;
+  final bool canHurtPlayer;
+  final SpriteAnimationData? flyAnimationData;
+
+  late double currentPower;
 
   bool isActive = true;
 
@@ -17,6 +21,8 @@ class Missile extends SpriteAnimationGroupComponent<bool> with HasGameReference<
     required this.power,
     required this.speed,
     required this.spriteAsset,
+    this.canHurtPlayer = true,
+    this.flyAnimationData,
     super.position,
     super.size,
   }) : super(anchor: Anchor.center);
@@ -25,9 +31,11 @@ class Missile extends SpriteAnimationGroupComponent<bool> with HasGameReference<
   Future<void> onLoad() async {
     // sprite = Sprite(game.images.fromCache(spriteAsset));
 
+    currentPower = power;
+
     final idleAnimation = SpriteAnimation.fromFrameData(
       game.images.fromCache(spriteAsset),
-      SpriteAnimationData.sequenced(
+      flyAnimationData ?? SpriteAnimationData.sequenced(
         amount: 1,
         stepTime: 1,
         textureSize: Vector2.all(8),
@@ -61,11 +69,14 @@ class Missile extends SpriteAnimationGroupComponent<bool> with HasGameReference<
   @override
   void update(double dt) {
     super.update(dt);
-    if (position.y > game.size.y + size.y) {
+    if (position.y > game.size.y + size.y || currentPower <= 0) {
       playBreakingEffect();
       return;
     }
-    if (isActive) position.y += speed * dt;
+    if (isActive) {
+      position.y += speed.y * dt;
+      position.x += speed.x * dt;
+    }
   }
 
   void playBreakingEffect() {
@@ -76,4 +87,10 @@ class Missile extends SpriteAnimationGroupComponent<bool> with HasGameReference<
       ColorEffect(Colors.white, EffectController(duration: 1.2), opacityFrom: 0, opacityTo: 1),
     ], onComplete: removeFromParent));
   }
+
+  void reducePower(double value) {
+    currentPower -= value;
+  }
 }
+
+

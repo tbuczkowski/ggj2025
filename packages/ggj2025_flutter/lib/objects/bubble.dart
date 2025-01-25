@@ -10,7 +10,7 @@ import 'package:ggj2025_flutter/objects/missile.dart';
 import 'package:ggj2025_flutter/sfx_assets.dart';
 
 class Bubble extends SpriteAnimationGroupComponent<bool> with CollisionCallbacks, HasGameReference<GGJ25Game> {
-  int _strength = 100;
+  double _strength = 100;
 
   Bubble({super.position, super.size}) : super(anchor: Anchor.center, priority: 999);
 
@@ -54,7 +54,7 @@ class Bubble extends SpriteAnimationGroupComponent<bool> with CollisionCallbacks
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (_strength <= 0) return;
-    if (other is Missile && other.isActive) {
+    if (other is Missile && other.isActive && other.canHurtPlayer) {
       print('HIT! Strength left: $_strength');
       this._strength -= other.power;
       other.playBreakingEffect();

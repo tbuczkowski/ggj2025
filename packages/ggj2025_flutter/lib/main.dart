@@ -47,11 +47,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    // initPorts();
+     initPorts();
   }
 
   Future<void> initPorts() async {
-    port = SerialPort('/dev/cu.usbmodem11201');
+    // port = SerialPort('/dev/cu.usbmodem11201');
+    port = SerialPort('COM3');
     port.openReadWrite();
     // this reboots the python program running on rpi
     port.write(Uint8List.fromList('\x03\x04'.codeUnits));

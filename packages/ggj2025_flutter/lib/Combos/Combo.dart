@@ -1,11 +1,29 @@
-import 'package:ggj2025_flutter/actors/fellowship.dart';
 import 'package:ggj2025_flutter/game.dart';
+import 'package:ggj2025_flutter/objects/missiles/ice_missile.dart';
+import 'package:ggj2025_flutter/objects/missiles/thunderstrike.dart';
 
 class Combo {
-    List<String> Inputs;
-    String Name;
-    Function(Fellowship, GGJ25Game) ComboEffect;
+  final List<String> inputs;
+  final String name;
+  final Function(GGJ25Game) comboEffect;
 
-    Combo(this.Inputs, this.Name, this.ComboEffect){
-    }
+  const Combo(this.inputs, this.name, this.comboEffect);
+
+  @override
+  bool operator ==(Object other) {
+    if (other is Combo) return other.name == name;
+    return false;
+  }
+}
+
+sealed class Combos {
+  static final Combo tripleBork = Combo(["bork", "bork", "bork"], "bork overdrive",
+          (game) => game.world.add(IceMissile(position: game.fellowship.position)));
+  static final Combo borkBonk = Combo(["bork", "bonk"], "reinforced bonk",
+          (game) => game.world.add(Thunderstrike(position: game.fellowship.position)));
+
+  static List<Combo> get all => [
+    tripleBork,
+    borkBonk,
+  ];
 }

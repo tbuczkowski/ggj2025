@@ -25,6 +25,7 @@ flutter:
     - assets/audio/
     - assets/images/
     - assets/images/objects/
+    - assets/images/objects/ice_missile1/
     - assets/images/ui/
     - assets/images/enemies/Anglerfish/
     - assets/images/enemies/Eel/
