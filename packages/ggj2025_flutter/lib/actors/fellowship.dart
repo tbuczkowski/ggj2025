@@ -15,7 +15,6 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
 
   late Bubble bubble;
 
-  Fellowship({super.position});
   static const double maxMovementSpeed = 25.0;
   double movementSpeed;
 

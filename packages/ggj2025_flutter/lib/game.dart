@@ -5,7 +5,6 @@ import 'package:flame/parallax.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart' hide Hero;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:ggj2025_flutter/Combos/DoggoComboHandler.dart';
 import 'package:ggj2025_flutter/actors/fellowship.dart';
 import 'package:ggj2025_flutter/actors/heroes/hero.dart';
@@ -34,7 +33,12 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   final DoggoComboHandler doggoInputCombos = DoggoComboHandler();
   late final ConfigManager configManager;
   late final LevelConfig currentLevelConfig;
-  late Fellowship fellowship;
+  late final Fellowship fellowship = Fellowship(
+    position: Vector2(
+      0,
+      camera.viewport.size.y * 0.90 - 122,
+    ),
+  );
   late CameraTarget _cameraTarget;
 
   @override
@@ -48,8 +52,6 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
 
     configManager = ConfigManager();
     currentLevelConfig = configManager.config.levels[1];
-
-    fellowship = Fellowship(position: Vector2(100, 625));
 
     List<ParallaxImageData> parallaxDataList =
         currentLevelConfig.parallax.map((parallaxLayer) => ParallaxImageData(parallaxLayer)).toList();
@@ -68,13 +70,6 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
         camera.viewport.size.y * 0.90,
       )));
     }
-
-    Fellowship fellowship = Fellowship(
-      position: Vector2(
-        0,
-        camera.viewport.size.y * 0.90 - 122,
-      ),
-    );
 
     add(fellowship);
     world.add(Ground(position: Vector2(0, 675)));
@@ -122,8 +117,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   TextComponent? red;
 
   void greenButtonOn() {
-    green = TextComponent(
-        text: 'Green Button Pressed', position: Vector2(100, 100));
+    green = TextComponent(text: 'Green Button Pressed', position: Vector2(100, 100));
     add(green!);
   }
 
@@ -133,8 +127,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   }
 
   void redButtonOn() {
-    red =
-        TextComponent(text: 'Red Button Pressed', position: Vector2(100, 200));
+    red = TextComponent(text: 'Red Button Pressed', position: Vector2(100, 200));
     add(red!);
   }
 
