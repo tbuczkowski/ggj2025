@@ -18,7 +18,7 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
 
   static const double bpm = 135.0;
   static const double timeBetweenNextPresses = (1 / (bpm / 60));
-  static const double beatTimeMargin = 10;
+  static const double beatTimeMargin = 0.2;
   static const double marginOfTimeError = timeBetweenNextPresses * beatTimeMargin;
 
   @override
@@ -33,12 +33,12 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
     timeSinceLastBeat += dt;
     if(timeSinceLastBeat > timeBetweenNextPresses + marginOfTimeError) {
       timeSinceLastBeat -= timeBetweenNextPresses;
-      gameIsInRhytmWindow = true;
+      gameIsInRhytmWindow = false;
       // noteAlraedyHitInTHisBit = false;
     } else if(timeSinceLastBeat > timeBetweenNextPresses - marginOfTimeError) {
       gameIsInRhytmWindow = true;
     } else {
-      gameIsInRhytmWindow = true;
+      gameIsInRhytmWindow = false;
     }
   }
 

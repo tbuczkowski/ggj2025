@@ -15,7 +15,7 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
   final double extent = 500;
 
   final FellowshipState state = FellowshipState();
-  final ComboHandler inputCombos = ComboHandler();
+  late ComboHandler combos;
 
   late Bubble bubble;
 
@@ -28,6 +28,8 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
 
   @override
   Future<void> onLoad() async {
+    addHero(HeroType.blue);
+    combos = game.children.where((x) => x is ComboHandler).first as ComboHandler;
     add(bubble = Bubble(position: Vector2(0, 0), size: Vector2.all(0.0)));
 
     // game.world.add(cameraTarget = PositionComponent(position: Vector2(400, 450)));
