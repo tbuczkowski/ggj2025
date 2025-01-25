@@ -27,6 +27,11 @@ enum EnemyType {
   floater_knight
 }
 
+class EnemyHitbox extends CircleHitbox {
+  EnemyHitbox({super.collisionType});
+}
+
+
 abstract class Enemy extends SpriteAnimationGroupComponent<EnemyState>
     with CollisionCallbacks, HasGameReference<GGJ25Game> {
   final EnemyType enemyType;
@@ -76,7 +81,7 @@ abstract class Enemy extends SpriteAnimationGroupComponent<EnemyState>
   @override
   Future<void> onLoad() async {
     loadAnimations();
-    add(CircleHitbox());
+    add(EnemyHitbox());
   }
 
   loadAnimations() {

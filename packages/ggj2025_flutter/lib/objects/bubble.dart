@@ -11,13 +11,14 @@ import 'package:ggj2025_flutter/sfx_assets.dart';
 
 class Bubble extends SpriteAnimationGroupComponent<bool> with CollisionCallbacks, HasGameReference<GGJ25Game> {
   double _strength = 100;
+  CircleHitbox hitbox = CircleHitbox();
 
   Bubble({super.position, super.size}) : super(anchor: Anchor.center, priority: 999);
 
   @override
   Future<void> onLoad() async {
     // sprite = Sprite(game.images.fromCache(GfxAssets.bubble));
-    add(CircleHitbox());
+    add(hitbox);
 
     final idleAnimation = SpriteAnimation.fromFrameData(
       game.images.fromCache(GfxAssets.bubble),

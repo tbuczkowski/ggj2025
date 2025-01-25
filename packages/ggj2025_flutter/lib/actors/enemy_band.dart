@@ -48,5 +48,5 @@ class EnemyBand extends PositionComponent with HasGameReference<GGJ25Game> {
     // state.currentHero.performAction();
   }
 
-  bool get isDead => false;
+  bool get isDead => !children.any((c) => c is Enemy);
 }

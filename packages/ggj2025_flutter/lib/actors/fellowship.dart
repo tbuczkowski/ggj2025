@@ -1,8 +1,12 @@
 import 'dart:math';
 
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/geometry.dart';
 import 'package:flutter/services.dart';
 import 'package:ggj2025_flutter/Combos/ComboHandler.dart';
+import 'package:ggj2025_flutter/actors/enemy/enemy.dart';
+import 'package:ggj2025_flutter/actors/enemy_band.dart';
 import 'package:ggj2025_flutter/actors/heroes/hero.dart';
 import 'package:ggj2025_flutter/game.dart';
 import 'package:ggj2025_flutter/objects/bubble.dart';
@@ -85,8 +89,11 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
       // TODO: heroes should start begin floating towards the "surface"
       removeFromParent();
     }
-
-    state.currentHero.performAction();
+    
+    if (state.movementSpeed == 0 && !hasEnemyBandAhead()) {
+      startWalking();
+      return;
+    }
 
     double distanceWalked = dt * state.movementSpeed;
     position.x += distanceWalked;
@@ -108,5 +115,15 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
     updateParallaxVelocity();
   }
 
-  void updateParallaxVelocity() => game.parallaxComponent.parallax?.baseVelocity = Vector2(state.movementSpeed, 0);
+  void attack() {
+    state.heroes.forEach((hero) => hero.attack());
+    state.movementSpeed = 0;
+    state.distanceTravelledSinceLastEvent = 0;
+    updateParallaxVelocity();
+  }
+
+  void updateParallaxVelocity() =>
+      game.parallaxComponent.parallax?.baseVelocity = Vector2(state.movementSpeed, 0);
+
+  bool hasEnemyBandAhead() => game.world.children.any((c) => c is EnemyBand);
 }

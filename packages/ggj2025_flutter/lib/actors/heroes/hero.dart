@@ -15,6 +15,8 @@ abstract class Hero extends SpriteAnimationGroupComponent<HeroState> with HasGam
   final HeroState? initialState;
   final Map<HeroState, String> animationAssets;
 
+  final CircleHitbox hitbox = CircleHitbox();
+
   factory Hero._blue(Vector2 position) => BlueHero(position: position);
   factory Hero._white(Vector2 position) => WhiteHero(position: position);
   factory Hero._pink(Vector2 position) => PinkHero(position: position);
@@ -35,7 +37,7 @@ abstract class Hero extends SpriteAnimationGroupComponent<HeroState> with HasGam
   @override
   Future<void> onLoad() async {
     loadAnimations();
-    add(CircleHitbox());
+    add(hitbox);
   }
 
   loadAnimations() {
@@ -66,6 +68,7 @@ abstract class Hero extends SpriteAnimationGroupComponent<HeroState> with HasGam
         stepTime: .2,
         textureSize: Vector2.all(32),
         texturePosition: Vector2.all(0.0),
+        loop: false,
       ),
     );
 
@@ -76,6 +79,7 @@ abstract class Hero extends SpriteAnimationGroupComponent<HeroState> with HasGam
         stepTime: .2,
         textureSize: Vector2.all(32),
         texturePosition: Vector2.all(0.0),
+        loop: false,
       ),
     );
 
@@ -93,7 +97,8 @@ abstract class Hero extends SpriteAnimationGroupComponent<HeroState> with HasGam
     // react to bongo input - override in concrete implementation
   }
 
-  void performAction() {
-    // do sth if correct / known combo was played on bongos - override in concrete implementation
+  void attack() {
+    current = HeroState.attack1;
+    animationTicker?.onComplete = () => current = HeroState.idle;
   }
 }
