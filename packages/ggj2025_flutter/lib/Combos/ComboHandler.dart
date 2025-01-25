@@ -43,10 +43,10 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
       // noteAlraedyHitInTHisBit = false;
     } else if (timeSinceLastBeat > timeBetweenNextPresses - marginOfTimeError) {
       if (!gameIsInRhytmWindow) GameAudioPlayer.playEffect(SfxAssets.metro, 0.03);
-      //log('In rhythm!');
+      // log('In rhythm!');
       gameIsInRhytmWindow = true;
     } else {
-      //log('Outside rhythm window (2)');
+      // log('Outside rhythm window (2)');
       gameIsInRhytmWindow = false;
     }
   }
@@ -54,7 +54,7 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
   void comboInput(String input) {
     //log(gameIsInRhytmWindow.toString());
 
-    //print(timeBetweenNextPresses);
+    // print(timeBetweenNextPresses);
     //print(time % timeBetweenNextPresses);
     if (game.fellowship.actionInProgress) {
       GameAudioPlayer.playEffect(SfxAssets.chop);
@@ -86,7 +86,8 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
   }
 
   bool _comboIsFinished() {
-    return currentlyMatchingCombos.length == 1;
+    return currentlyMatchingCombos.length == 1 &&
+        currentIndexOfHitToMatch == currentlyMatchingCombos[0].inputs.length - 1;
   }
 
   void _appendToCombo(String input) {
@@ -109,6 +110,7 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
     // currentlyMatchingCombos =
     //     currentlyMatchingCombos.where((x) => x.inputs[currentIndexOfHitToMatch] == input).toList();
     // log(input + ' was pressed, that\'s note with index #' + currentIndexOfHitToMatch.toString());
+    log(input + ' was pressed, that\'s note with index #' + currentIndexOfHitToMatch.toString());
     log('Current streak: ${currentComboState.join('|')}');
   }
 

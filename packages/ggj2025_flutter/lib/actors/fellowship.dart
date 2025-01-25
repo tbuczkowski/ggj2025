@@ -131,4 +131,8 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
 
   bool hasEnemyBandAhead() =>
       game.world.children.where((c) => c is EnemyBand && c.position.x - position.x < 300).isNotEmpty;
+
+  void buffDefence() {
+    bubble.onBuffDefence();
+  }
 }

@@ -25,9 +25,12 @@ sealed class Combos {
     game.world.add(Thunderstrike(position: game.fellowship.position));
     game.fellowship.attack();
   });
+  static final Combo defenceBonk =
+      Combo(['bonk', 'bonk'], 'bonk defence', (game) => game.fellowship.buffDefence());
 
   static List<Combo> get all => [
         tripleBork,
         borkBonk,
+        defenceBonk,
       ];
 }

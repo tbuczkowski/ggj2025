@@ -7,6 +7,9 @@ import 'package:ggj2025_flutter/gfx_assets.dart';
 
 class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
   late SpriteComponent rhytmIndicator;
+  List<Component> comboList = [];
+  Sprite greenButtonSprite = Sprite(game.images.fromCache(GfxAssets.redButton));
+  Sprite redButtonSprite = Sprite(game.images.fromCache(GfxAssets.greenButton));
 
   Hud({
     super.position,
@@ -58,7 +61,12 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
   @override
   void update(double dt) {
     time += dt;
-    //print(game.combo.time % ComboHandler.timeBetweenNextPresses);
+    _updateRhytm();
+    _updateComboList();
+  }
+
+  void _updateRhytm() {
+    print(game.combo.time % ComboHandler.timeBetweenNextPresses);
     if ((game.combo.time % ComboHandler.timeBetweenNextPresses) - 0.1 < 0.2) {
       rhytmIndicator.size = Vector2(24, 48);
       // rhytmIndicator.size = Vector2.all(0)
@@ -81,6 +89,50 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
       if (bar.position.x < 0) {
         bar.position = Vector2(bars.length * 100, 12);
       }
+    }
+  }
+
+  void _updateComboList() {
+    removeAll(comboList);
+    comboList = [];
+    var matchingCombos = game.combo.currentlyMatchingCombos;
+    var indexWhereToStartDisplayingCombo = game.combo.currentIndexOfHitToMatch;
+    for (var combo in matchingCombos) {
+      var indexOfComboList = matchingCombos.indexOf(combo).toDouble();
+      var text = TextComponent(
+          text: combo.name + ':',
+          position: Vector2(
+              100 - gameRef.camera.viewport.size.x / 2, gameRef.camera.viewport.size.y - 100 - 60 * indexOfComboList),
+          size: Vector2(20, 20),
+          anchor: Anchor.center,
+          scale: Vector2(1, 1));
+      add(text);
+      comboList.add(text);
+      combo.inputs.asMap().forEach((indexOfInput, button) {
+        if (indexWhereToStartDisplayingCombo > indexOfInput) return;
+        var inputUiPosition = Vector2(
+            210 + (indexOfInput - indexWhereToStartDisplayingCombo) * 40 - gameRef.camera.viewport.size.x / 2,
+            gameRef.camera.viewport.size.y - 100 - 60 * indexOfComboList);
+        var spriteToAdd = SpriteComponent(
+            sprite: _spritePathForButton(button),
+            position: inputUiPosition,
+            size: Vector2.all(20),
+            anchor: Anchor.center,
+            scale: Vector2(2, 2));
+        comboList.add(spriteToAdd);
+        add(spriteToAdd);
+      });
+    }
+  }
+
+  Sprite? _spritePathForButton(String input) {
+    switch (input) {
+      case 'bonk':
+        return greenButtonSprite;
+      case 'bork':
+        return redButtonSprite;
+      default:
+        return null;
     }
   }
 }
