@@ -118,6 +118,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
 
   void greenButtonOn() {
     green = TextComponent(text: 'Green Button Pressed', position: Vector2(100, 100));
+    combo.comboInput('bork');
     add(green!);
   }
 
@@ -128,6 +129,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
 
   void redButtonOn() {
     red = TextComponent(text: 'Red Button Pressed', position: Vector2(100, 200));
+    combo.comboInput('bonk');
     add(red!);
   }
 
