@@ -18,6 +18,11 @@ class EnemyBand extends PositionComponent
     addEnemy(EnemyType.anglerfish);
     addEnemy(EnemyType.swordfish);
 
+    addEnemy(EnemyType.floater);
+    addEnemy(EnemyType.floater_knight);
+    addEnemy(EnemyType.siren_warrior);
+    addEnemy(EnemyType.exploding_fish);
+
     return super.onLoad();
   }
 

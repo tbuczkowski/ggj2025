@@ -30,6 +30,10 @@ flutter:
     - assets/images/enemies/Jellyfish/
     - assets/images/enemies/Octopus/
     - assets/images/enemies/Swordfish/
+    - assets/images/enemies/Floater/
+    - assets/images/enemies/Floater_Knight/
+    - assets/images/enemies/Siren_Warrior/
+    - assets/images/enemies/Exploding_Fish/
     - assets/images/background/common/
     - assets/images/background/level_1/
     - assets/images/background/level_2/

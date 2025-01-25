@@ -62,6 +62,30 @@ class GfxAssets {
   static const String octopusHurt = 'enemies/Octopus/Hurt.png';
   static const String octopusDeath = 'enemies/Octopus/Death.png';
 
+  static const String explodingFishIdle = 'enemies/Exploding_Fish/Idle.png';
+  static const String explodingFishWalk = 'enemies/Exploding_Fish/Walk.png';
+  static const String explodingFishAttack = 'enemies/Exploding_Fish/Attack.png';
+  static const String explodingFishHurt = 'enemies/Exploding_Fish/Hurt.png';
+  static const String explodingFishDeath = 'enemies/Exploding_Fish/Death.png';
+
+  static const String floaterIdle = 'enemies/Floater/Idle.png';
+  static const String floaterWalk = 'enemies/Floater/Walk.png';
+  static const String floaterAttack = 'enemies/Floater/Attack.png';
+  static const String floaterHurt = 'enemies/Floater/Hurt.png';
+  static const String floaterDeath = 'enemies/Floater/Death.png';
+
+  static const String sirenWarriorIdle = 'enemies/Siren_Warrior/Idle.png';
+  static const String sirenWarriorWalk = 'enemies/Siren_Warrior/Walk.png';
+  static const String sirenWarriorAttack = 'enemies/Siren_Warrior/Attack.png';
+  static const String sirenWarriorHurt = 'enemies/Siren_Warrior/Hurt.png';
+  static const String sirenWarriorDeath = 'enemies/Siren_Warrior/Death.png';
+
+  static const String floaterKnightIdle = 'enemies/Floater_Knight/Idle.png';
+  static const String floaterKnightWalk = 'enemies/Floater_Knight/Walk.png';
+  static const String floaterKnightAttack = 'enemies/Floater_Knight/Attack.png';
+  static const String floaterKnightHurt = 'enemies/Floater_Knight/Hurt.png';
+  static const String floaterKnightDeath = 'enemies/Floater_Knight/Death.png';
+
   static Future<void> loadAssets(FlameGame gameRef) => gameRef.images.loadAll([
         hero1Idle,
         hero2Idle,
@@ -104,5 +128,25 @@ class GfxAssets {
         octopusAttack,
         octopusHurt,
         octopusDeath,
+        explodingFishIdle,
+        explodingFishWalk,
+        explodingFishAttack,
+        explodingFishHurt,
+        explodingFishDeath,
+        floaterIdle,
+        floaterWalk,
+        floaterAttack,
+        floaterHurt,
+        floaterDeath,
+        floaterKnightIdle,
+        floaterKnightWalk,
+        floaterKnightAttack,
+        floaterKnightHurt,
+        floaterKnightDeath,
+        sirenWarriorIdle,
+        sirenWarriorWalk,
+        sirenWarriorAttack,
+        sirenWarriorHurt,
+        sirenWarriorDeath,
       ]);
 }

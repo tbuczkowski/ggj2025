@@ -2,15 +2,30 @@ import 'package:ggj2025_flutter/actors/enemy/anglerfish.dart';
 import 'package:ggj2025_flutter/actors/enemy/eel.dart';
 import 'package:ggj2025_flutter/actors/enemy/jellyfish.dart';
 import 'package:ggj2025_flutter/actors/enemy/octopus.dart';
+import 'package:ggj2025_flutter/actors/enemy/siren_warrior.dart';
 import 'package:ggj2025_flutter/actors/enemy/swordfish.dart';
 import 'package:ggj2025_flutter/game.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
+import 'exploding_fish.dart';
+import 'floater.dart';
+import 'floater_knight.dart';
+
 enum EnemyState { idle, walk, attack, hurt, death }
 
-enum EnemyType { jellyfish, swordfish, anglerfish, eel, octopus }
+enum EnemyType {
+  jellyfish,
+  swordfish,
+  anglerfish,
+  eel,
+  octopus,
+  exploding_fish,
+  floater,
+  siren_warrior,
+  floater_knight
+}
 
 abstract class Enemy extends SpriteAnimationGroupComponent<EnemyState>
     with HasGameReference<GGJ25Game> {
@@ -19,17 +34,36 @@ abstract class Enemy extends SpriteAnimationGroupComponent<EnemyState>
   final Map<EnemyState, String> animationAssets;
 
   factory Enemy.jellyfish(Vector2 position) => Jellyfish(position: position);
+
   factory Enemy.swordfish(Vector2 position) => Swordfish(position: position);
+
   factory Enemy.anglerfish(Vector2 position) => Anglerfish(position: position);
+
   factory Enemy.eel(Vector2 position) => Eel(position: position);
+
   factory Enemy.octopus(Vector2 position) => Octopus(position: position);
+
+  factory Enemy.floater(Vector2 position) => Floater(position: position);
+
+  factory Enemy.floater_knight(Vector2 position) =>
+      FloaterKnight(position: position);
+
+  factory Enemy.siren_warrior(Vector2 position) =>
+      SirenWarrior(position: position);
+
+  factory Enemy.exploding_fish(Vector2 position) =>
+      ExplodingFish(position: position);
 
   static Map<EnemyType, Enemy Function(Vector2)> enemyFactories = {
     EnemyType.jellyfish: Enemy.jellyfish,
     EnemyType.swordfish: Enemy.swordfish,
     EnemyType.anglerfish: Enemy.anglerfish,
     EnemyType.eel: Enemy.eel,
-    EnemyType.octopus: Enemy.octopus
+    EnemyType.octopus: Enemy.octopus,
+    EnemyType.floater: Enemy.floater,
+    EnemyType.floater_knight: Enemy.floater_knight,
+    EnemyType.siren_warrior: Enemy.siren_warrior,
+    EnemyType.exploding_fish: Enemy.exploding_fish,
   };
 
   Enemy({
