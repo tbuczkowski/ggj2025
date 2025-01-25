@@ -60,15 +60,15 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
     if (!gameIsInRhytmWindow) {
       _resetCombo();
       (switch (input) {
-        "bork" => GameAudioPlayer.playEffect(SfxAssets.fail1, !playSounds),
-        "bonk" => GameAudioPlayer.playEffect(SfxAssets.fail2, !playSounds),
+        "bork" => GameAudioPlayer.playEffect(SfxAssets.fail1),
+        "bonk" => GameAudioPlayer.playEffect(SfxAssets.fail2),
         _ => log('unknown input: ' + input),
       });
       return;
     }
     (switch (input) {
-      "bork" => GameAudioPlayer.playEffect(SfxAssets.bongo1, !playSounds),
-      "bonk" => GameAudioPlayer.playEffect(SfxAssets.bongo2, !playSounds),
+      "bork" => GameAudioPlayer.playEffect(SfxAssets.bongo1),
+      "bonk" => GameAudioPlayer.playEffect(SfxAssets.bongo2),
       _ => log('unknown input: ' + input),
     });
     _appendToCombo(input);
