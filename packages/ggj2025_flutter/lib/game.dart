@@ -43,7 +43,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   late final ComboHandler combo = ComboHandler();
 
   @override
-  bool get debugMode => true;
+  bool get debugMode => false;
 
   @override
   Future<void> onLoad() async {

@@ -9,6 +9,8 @@ import 'package:ggj2025_flutter/sfx_assets.dart';
 import 'Combo.dart';
 
 class ComboHandler extends Component with HasGameReference<GGJ25Game> {
+  double time = 0;
+
   double timeSinceLastBeat = 0;
   List<Combo> combos = _allCombos();
   int currentIndexOfHitToMatch = 0;
@@ -17,9 +19,9 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
   // bool noteAlraedyHitInTHisBit = false;
   late Fellowship fellowship;
 
-  static const double bpm = 135.0;
+  static const double bpm = 120.0;
   static const double timeBetweenNextPresses = (1 / (bpm / 60));
-  static const double beatTimeMargin = 0.2;
+  static const double beatTimeMargin = 0.3;
   static const double marginOfTimeError = timeBetweenNextPresses * beatTimeMargin;
 
   @override
@@ -31,12 +33,14 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
   @override
   void update(double dt) {
     super.update(dt);
+    time += dt;
     timeSinceLastBeat += dt;
     if (timeSinceLastBeat > timeBetweenNextPresses + marginOfTimeError) {
       timeSinceLastBeat -= timeBetweenNextPresses;
       gameIsInRhytmWindow = false;
       // noteAlraedyHitInTHisBit = false;
     } else if (timeSinceLastBeat > timeBetweenNextPresses - marginOfTimeError) {
+      if (!gameIsInRhytmWindow) GameAudioPlayer.playEffect(SfxAssets.metro, 0.03);
       gameIsInRhytmWindow = true;
     } else {
       gameIsInRhytmWindow = false;
@@ -45,6 +49,10 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
 
   void comboInput(String input) {
     log(gameIsInRhytmWindow.toString());
+
+    print(timeBetweenNextPresses);
+    print(time % timeBetweenNextPresses);
+
     if (!gameIsInRhytmWindow) {
       _resetCombo();
       (switch (input) {
