@@ -33,6 +33,9 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, KeyboardEvents {
   late final LevelConfig currentLevelConfig;
 
   @override
+  bool get debugMode => true;
+
+  @override
   Future<void> onLoad() async {
     FlameAudio.bgm.initialize();
     await GfxAssets.loadAssets(this);
@@ -41,9 +44,8 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, KeyboardEvents {
     configManager = ConfigManager();
     currentLevelConfig = configManager.config.levels[1];
 
-    List<ParallaxImageData> parallaxDataList = currentLevelConfig.parallax
-        .map((parallaxLayer) => ParallaxImageData(parallaxLayer))
-        .toList();
+    List<ParallaxImageData> parallaxDataList =
+        currentLevelConfig.parallax.map((parallaxLayer) => ParallaxImageData(parallaxLayer)).toList();
 
     parallaxComponent = await loadParallaxComponent(
       parallaxDataList,
@@ -51,12 +53,26 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, KeyboardEvents {
     );
     add(parallaxComponent);
 
-    add(Ground(position: Vector2(0, 675)));
+    for (int i = 0; i < 100; i++) {
+      add(Ground(
+          position: Vector2(
+        16.0 * i,
+        camera.viewport.size.y * 0.90,
+      )));
+    }
 
-    Fellowship fellowship = Fellowship(position: Vector2(100, 625));
+    Fellowship fellowship = Fellowship(
+      position: Vector2(
+        0,
+        camera.viewport.size.y * 0.90 - 122,
+      ),
+    );
 
     add(fellowship);
 
+    fellowship.addHero(HeroType.blue);
+    fellowship.addHero(HeroType.white);
+    fellowship.addHero(HeroType.pink);
     fellowship.addHero(HeroType.white);
     fellowship.addHero(HeroType.pink);
 

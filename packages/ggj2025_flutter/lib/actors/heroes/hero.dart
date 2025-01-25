@@ -10,8 +10,7 @@ enum HeroState { idle, walk, attack1, attack2 }
 
 enum HeroType { blue, white, pink }
 
-abstract class Hero extends SpriteAnimationGroupComponent<HeroState>
-    with HasGameReference<GGJ25Game> {
+abstract class Hero extends SpriteAnimationGroupComponent<HeroState> with HasGameReference<GGJ25Game> {
   final HeroType heroType;
   final HeroState? initialState;
   final Map<HeroState, String> animationAssets;
@@ -31,7 +30,7 @@ abstract class Hero extends SpriteAnimationGroupComponent<HeroState>
     required this.heroType,
     this.initialState,
     required this.animationAssets,
-  }) : super(size: Vector2.all(64), anchor: Anchor.center);
+  }) : super(size: Vector2.all(64), anchor: Anchor.centerLeft);
 
   @override
   Future<void> onLoad() async {
