@@ -9,17 +9,18 @@ import 'package:ggj2025_flutter/sfx_assets.dart';
 
 class ComboHandler extends Component with HasGameReference<GGJ25Game> {
   double timeSinceLastBeat = 0;
-  List<Combo> combos = _allCombos();
   int currentIndexOfHitToMatch = 0;
-  List<Combo> currentlyMatchingCombos = _allCombos();
+  List<Combo> currentlyMatchingCombos = Combos.all;
   bool gameIsInRhytmWindow = false;
+  List<String> currentComboState = [];
+  bool playSounds = false;
 
   // bool noteAlraedyHitInTHisBit = false;
   late Fellowship fellowship;
 
   static const double bpm = 135.0;
   static const double timeBetweenNextPresses = (1 / (bpm / 60));
-  static const double beatTimeMargin = 0.3;
+  static const double beatTimeMargin = 0.2;
   static const double marginOfTimeError = timeBetweenNextPresses * beatTimeMargin;
 
   @override
@@ -33,12 +34,15 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
     super.update(dt);
     timeSinceLastBeat += dt;
     if (timeSinceLastBeat > timeBetweenNextPresses + marginOfTimeError) {
+      log('Outside rhythm window (1)');
       timeSinceLastBeat -= timeBetweenNextPresses;
       gameIsInRhytmWindow = false;
       // noteAlraedyHitInTHisBit = false;
     } else if (timeSinceLastBeat > timeBetweenNextPresses - marginOfTimeError) {
+      log('In rhythm!');
       gameIsInRhytmWindow = true;
     } else {
+      log('Outside rhythm window (2)');
       gameIsInRhytmWindow = false;
     }
   }
@@ -48,22 +52,22 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
     if (!gameIsInRhytmWindow) {
       _resetCombo();
       (switch (input) {
-        "bork" => GameAudioPlayer.playEffect(SfxAssets.fail1),
-        "bonk" => GameAudioPlayer.playEffect(SfxAssets.fail2),
+        "bork" => GameAudioPlayer.playEffect(SfxAssets.fail1, !playSounds),
+        "bonk" => GameAudioPlayer.playEffect(SfxAssets.fail2, !playSounds),
         _ => log('unknown input: ' + input),
       });
       return;
     }
     (switch (input) {
-      "bork" => GameAudioPlayer.playEffect(SfxAssets.bongo1),
-      "bonk" => GameAudioPlayer.playEffect(SfxAssets.bongo2),
+      "bork" => GameAudioPlayer.playEffect(SfxAssets.bongo1, !playSounds),
+      "bonk" => GameAudioPlayer.playEffect(SfxAssets.bongo2, !playSounds),
       _ => log('unknown input: ' + input),
     });
     _appendToCombo(input);
     if (_comboIsFinished()) {
-      var comboToExecute = currentlyMatchingCombos[0].ComboEffect;
-      log(currentlyMatchingCombos[0].Name + ' will fire');
-      comboToExecute(fellowship, game);
+      var comboToExecute = currentlyMatchingCombos[0].comboEffect;
+      log(currentlyMatchingCombos[0].name + ' will fire');
+      comboToExecute(game);
       _resetCombo();
     } else {
       currentIndexOfHitToMatch++;
@@ -71,28 +75,30 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
   }
 
   bool _comboIsFinished() {
-    return currentlyMatchingCombos.length == 1 &&
-        currentlyMatchingCombos[0].Inputs.length == currentIndexOfHitToMatch + 1;
+    return currentlyMatchingCombos.length == 1;
   }
 
   void _appendToCombo(String input) {
-    currentlyMatchingCombos =
-        currentlyMatchingCombos.where((x) => x.Inputs[currentIndexOfHitToMatch] == input).toList();
+    currentComboState.add(input);
+    currentlyMatchingCombos = currentlyMatchingCombos
+        .where((c) => c.inputs.join().startsWith(currentComboState.join()))
+        .toList();
+
+    if (currentlyMatchingCombos.length == 0) {
+      log('Nothing matches, reset');
+      _resetCombo();
+    }
+
+    // currentlyMatchingCombos =
+    //     currentlyMatchingCombos.where((x) => x.inputs[currentIndexOfHitToMatch] == input).toList();
     log(input + ' was pressed, that\'s note with index #' + currentIndexOfHitToMatch.toString());
+    log('Current streak: ${currentComboState.join('|')}');
   }
 
   void _resetCombo() {
-    currentlyMatchingCombos = combos;
+    currentlyMatchingCombos = [...Combos.all];
     currentIndexOfHitToMatch = 0;
+    currentComboState = [];
     log('combo reset');
-  }
-
-  static List<Combo> _allCombos() {
-    return [
-      new Combo(["bork", "bork", "bork"], "bork overdrive",
-          (fellowship, game) => fellowship.onCombo('am doggo')),
-      new Combo(["bork", "bonk"], "reinforced bonk",
-          (fellowship, game) => fellowship.onCombo('tons of damage'))
-    ];
   }
 }

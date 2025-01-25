@@ -19,8 +19,9 @@ class GameAudioPlayer {
       bgm.stop();
     }
 
-    bgm.play(asset, volume: 0);
+    bgm.play(asset, volume: 0.2);
   }
 
-  static void playEffect(String asset) => FlameAudio.play(asset, volume: 0.2);
+  static void playEffect(String asset, [bool ignoreCall = false]) =>
+      !ignoreCall ? FlameAudio.play(asset, volume: 0.2) : null;
 }

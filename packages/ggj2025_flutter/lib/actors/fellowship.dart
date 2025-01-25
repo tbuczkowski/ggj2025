@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:developer' as developer;
 
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +6,6 @@ import 'package:ggj2025_flutter/Combos/ComboHandler.dart';
 import 'package:ggj2025_flutter/actors/heroes/hero.dart';
 import 'package:ggj2025_flutter/game.dart';
 import 'package:ggj2025_flutter/objects/bubble.dart';
-import 'package:ggj2025_flutter/objects/missiles/ice_missile.dart';
 
 part 'fellowship_state.dart';
 
@@ -111,10 +109,4 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
   }
 
   void updateParallaxVelocity() => game.parallaxComponent.parallax?.baseVelocity = Vector2(state.movementSpeed, 0);
-
-  void onCombo(String comboType) {
-    game.world.add(IceMissile(position: position));
-
-    developer.log(comboType);
-  }
 }
