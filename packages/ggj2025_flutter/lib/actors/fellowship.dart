@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'dart:developer';
-
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:ggj2025_flutter/Combos/ComboHandler.dart';
@@ -28,9 +26,10 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
 
   @override
   Future<void> onLoad() async {
+    add(bubble = Bubble(position: Vector2(0, 0), size: Vector2.all(0.0)));
+
     addHero(HeroType.blue);
     combos = game.combo;
-    add(bubble = Bubble(position: Vector2(0, 0), size: Vector2.all(0.0)));
 
     // game.world.add(cameraTarget = PositionComponent(position: Vector2(400, 450)));
 
