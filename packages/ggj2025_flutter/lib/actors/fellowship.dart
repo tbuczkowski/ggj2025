@@ -2,6 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:ggj2025_flutter/actors/heroes/hero.dart';
 import 'package:ggj2025_flutter/game.dart';
+import 'package:ggj2025_flutter/objects/bubble.dart';
 
 part 'fellowship_state.dart';
 
@@ -13,6 +14,7 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
   @override
   Future<void> onLoad() async {
     addHero(HeroType.blue);
+    add(Bubble(position: Vector2(50, 0), size: Vector2.all(160.0)));
 
     return super.onLoad();
   }
