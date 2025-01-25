@@ -5,6 +5,7 @@ import 'package:flame/parallax.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart' hide Hero;
 import 'package:ggj2025_flutter/Combos/ComboHandler.dart';
+import 'package:ggj2025_flutter/Hud.dart';
 import 'package:ggj2025_flutter/actors/fellowship.dart';
 import 'package:ggj2025_flutter/actors/heroes/hero.dart';
 import 'package:ggj2025_flutter/camera_target.dart';
@@ -105,6 +106,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     camera.viewfinder.position = fellowship.position;
     camera.follow(_cameraTarget, maxSpeed: 200, snap: true);
     camera.viewfinder.anchor = Anchor(0.1, 0.5);
+    camera.viewport.add(Hud());
   }
 
   double timeSinceLastRockDropped = 0;

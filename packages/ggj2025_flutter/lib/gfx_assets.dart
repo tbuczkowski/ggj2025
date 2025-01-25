@@ -34,6 +34,8 @@ class GfxAssets {
     'grass4': 'objects/Grass4.png',
   };
 
+  static const String rhytmIndicator = 'ui/music.png';
+
   static const String jellyfishIdle = 'enemies/Jellyfish/Idle.png';
   static const String jellyfishWalk = 'enemies/Jellyfish/Walk.png';
   static const String jellyfishAttack = 'enemies/Jellyfish/Attack.png';
@@ -107,6 +109,7 @@ class GfxAssets {
         rock2,
         barrel,
         chest,
+        rhytmIndicator,
         grassMap['grass1']!,
         grassMap['grass2']!,
         grassMap['grass3']!,
