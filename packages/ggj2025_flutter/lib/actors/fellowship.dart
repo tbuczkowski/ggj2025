@@ -16,6 +16,10 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
   late Bubble bubble;
 
   Fellowship({super.position});
+  static const double maxMovementSpeed = 25.0;
+  double movementSpeed;
+
+  Fellowship({super.position, this.movementSpeed = 0});
 
   @override
   Future<void> onLoad() async {
@@ -40,6 +44,19 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
 
   @override
   bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    if (keysPressed.contains(LogicalKeyboardKey.arrowRight)) {
+      movementSpeed = maxMovementSpeed;
+    }
+
+    if (keysPressed.contains(LogicalKeyboardKey.arrowLeft)) {
+      movementSpeed = -maxMovementSpeed;
+    }
+
+    if (keysPressed.contains(LogicalKeyboardKey.arrowDown)) {
+      movementSpeed = 0.0;
+    }
+
+    game.parallaxComponent.parallax?.baseVelocity = Vector2(movementSpeed, 0);
     state.currentHero.handleInput(event, keysPressed);
 
     return super.onKeyEvent(event, keysPressed);
@@ -53,6 +70,8 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
     }
 
     state.currentHero.performAction();
+
+    position.x += dt * movementSpeed;
   }
 
   bool get isDead => !children.any((e) => e is Bubble);
