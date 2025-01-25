@@ -90,7 +90,10 @@ class GfxAssets {
   static const String floaterKnightHurt = 'enemies/Floater_Knight/Hurt.png';
   static const String floaterKnightDeath = 'enemies/Floater_Knight/Death.png';
 
-  static Future<void> loadAssets(FlameGame gameRef) => gameRef.images.loadAll([
+  static const String iceMissileFlying = 'objects/ice_missile1/flying.png';
+
+  static Future<void> loadAssets(FlameGame gameRef) =>
+      gameRef.images.loadAll([
         hero1Idle,
         hero2Idle,
         hero3Idle,
@@ -159,6 +162,7 @@ class GfxAssets {
         sirenWarriorAttack,
         sirenWarriorHurt,
         sirenWarriorDeath,
+        iceMissileFlying,
         smoke,
       ]);
 }

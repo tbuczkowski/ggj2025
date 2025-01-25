@@ -7,7 +7,7 @@ import 'package:ggj2025_flutter/actors/enemy/swordfish.dart';
 import 'package:ggj2025_flutter/game.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/services.dart';
+import 'package:ggj2025_flutter/objects/missile.dart';
 
 import 'exploding_fish.dart';
 import 'floater.dart';
@@ -28,10 +28,13 @@ enum EnemyType {
 }
 
 abstract class Enemy extends SpriteAnimationGroupComponent<EnemyState>
-    with HasGameReference<GGJ25Game> {
+    with CollisionCallbacks, HasGameReference<GGJ25Game> {
   final EnemyType enemyType;
   final EnemyState? initialState;
   final Map<EnemyState, String> animationAssets;
+
+  double _health = 10;
+  double _toughness = 10;
 
   factory Enemy.jellyfish(Vector2 position) => Jellyfish(position: position);
 
@@ -45,14 +48,11 @@ abstract class Enemy extends SpriteAnimationGroupComponent<EnemyState>
 
   factory Enemy.floater(Vector2 position) => Floater(position: position);
 
-  factory Enemy.floater_knight(Vector2 position) =>
-      FloaterKnight(position: position);
+  factory Enemy.floater_knight(Vector2 position) => FloaterKnight(position: position);
 
-  factory Enemy.siren_warrior(Vector2 position) =>
-      SirenWarrior(position: position);
+  factory Enemy.siren_warrior(Vector2 position) => SirenWarrior(position: position);
 
-  factory Enemy.exploding_fish(Vector2 position) =>
-      ExplodingFish(position: position);
+  factory Enemy.exploding_fish(Vector2 position) => ExplodingFish(position: position);
 
   static Map<EnemyType, Enemy Function(Vector2)> enemyFactories = {
     EnemyType.jellyfish: Enemy.jellyfish,
@@ -127,6 +127,7 @@ abstract class Enemy extends SpriteAnimationGroupComponent<EnemyState>
         stepTime: .2,
         textureSize: Vector2.all(48),
         texturePosition: Vector2.all(0.0),
+        loop: false,
       ),
     );
 
@@ -141,11 +142,18 @@ abstract class Enemy extends SpriteAnimationGroupComponent<EnemyState>
     current = initialState ?? EnemyState.idle;
   }
 
-  void handleInput(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    // react to bongo input - override in concrete implementation
-  }
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is Missile) {
+      _health -= other.power;
+      other.reducePower(_toughness);
+    }
 
-  void performAction() {
-    // do sth if correct / known combo was played on bongos - override in concrete implementation
+    if (_health <= 0) {
+      current = EnemyState.death;
+      animationTicker?.onComplete = removeFromParent;
+    }
+
+    super.onCollision(intersectionPoints, other);
   }
 }

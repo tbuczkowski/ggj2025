@@ -2,11 +2,10 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flame/components.dart';
+import 'package:ggj2025_flutter/Combos/Combo.dart';
 import 'package:ggj2025_flutter/actors/fellowship.dart';
 import 'package:ggj2025_flutter/game.dart';
 import 'package:ggj2025_flutter/sfx_assets.dart';
-
-import 'Combo.dart';
 
 class ComboHandler extends Component with HasGameReference<GGJ25Game> {
   double timeSinceLastBeat = 0;
@@ -14,12 +13,13 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
   int currentIndexOfHitToMatch = 0;
   List<Combo> currentlyMatchingCombos = _allCombos();
   bool gameIsInRhytmWindow = false;
+
   // bool noteAlraedyHitInTHisBit = false;
   late Fellowship fellowship;
 
   static const double bpm = 135.0;
   static const double timeBetweenNextPresses = (1 / (bpm / 60));
-  static const double beatTimeMargin = 0.2;
+  static const double beatTimeMargin = 0.3;
   static const double marginOfTimeError = timeBetweenNextPresses * beatTimeMargin;
 
   @override
@@ -89,8 +89,10 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
 
   static List<Combo> _allCombos() {
     return [
-      new Combo(["bork", "bork", "bork"], "bork overdrive", (hero, game) => {log('am doggo')}),
-      new Combo(["bork", "bonk"], "reinforced bonk", (hero, game) => {log('tons of damage')})
+      new Combo(["bork", "bork", "bork"], "bork overdrive",
+          (fellowship, game) => fellowship.onCombo('am doggo')),
+      new Combo(["bork", "bonk"], "reinforced bonk",
+          (fellowship, game) => fellowship.onCombo('tons of damage'))
     ];
   }
 }

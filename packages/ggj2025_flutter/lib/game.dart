@@ -114,7 +114,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   @override
   void update(double dt) {
     _eventGenerator.updateTimeSinceLastEvent(dt);
-    _eventGenerator.addRandomRockAppearsEvent(world);
+    // _eventGenerator.addRandomRockAppearsEvent(world);
 
     if (_eventGenerator.shouldGenerateFightEvent(fellowship.state)) {
       _eventGenerator.addEventToScene(world, fellowship);
