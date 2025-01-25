@@ -25,6 +25,11 @@ flutter:
     - assets/audio/
     - assets/images/
     - assets/images/objects/
+    - assets/images/enemies/Anglerfish/
+    - assets/images/enemies/Eel/
+    - assets/images/enemies/Jellyfish/
+    - assets/images/enemies/Octopus/
+    - assets/images/enemies/Swordfish/
     - assets/images/background/common/
     - assets/images/background/level_1/
     - assets/images/background/level_2/

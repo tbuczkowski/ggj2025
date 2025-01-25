@@ -15,6 +15,8 @@ import 'package:ggj2025_flutter/objects/ground.dart';
 import 'package:ggj2025_flutter/objects/rock.dart';
 import 'package:ggj2025_flutter/sfx_assets.dart';
 
+import 'actors/enemy_band.dart';
+
 final GGJ25Game game = GGJ25Game();
 
 class GGJ25GameWidget extends StatelessWidget {
@@ -62,6 +64,9 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, KeyboardEvents {
 
     add(Rock(position: Vector2(128, 32)));
 
+    EnemyBand enemyBand = EnemyBand(position: Vector2(300, 300));
+    add(enemyBand);
+
     await super.onLoad();
   }
 
@@ -83,7 +88,8 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, KeyboardEvents {
   TextComponent? red;
 
   void greenButtonOn() {
-    green = TextComponent(text: 'Green Button Pressed', position: Vector2(100, 100));
+    green = TextComponent(
+        text: 'Green Button Pressed', position: Vector2(100, 100));
     add(green!);
   }
 
@@ -93,7 +99,8 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   void redButtonOn() {
-    red = TextComponent(text: 'Red Button Pressed', position: Vector2(100, 200));
+    red =
+        TextComponent(text: 'Red Button Pressed', position: Vector2(100, 200));
     add(red!);
   }
 
@@ -103,7 +110,8 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, KeyboardEvents {
   }
 
   @override
-  KeyEventResult onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+  KeyEventResult onKeyEvent(
+      KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     final isKeyDown = event is KeyDownEvent;
 
     final isSpace = keysPressed.contains(LogicalKeyboardKey.space);
