@@ -34,6 +34,13 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
 
   @override
   void update(double dt) {
+    if (isDead) {
+      // TODO: heroes should start begin floating towards the "surface"
+      removeFromParent();
+    }
+
     state.currentHero.performAction();
   }
+
+  bool get isDead => !children.any((e) => e is Bubble);
 }
