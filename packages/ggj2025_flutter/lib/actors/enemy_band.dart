@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame/components.dart';
 import 'package:ggj2025_flutter/actors/enemy/enemy.dart';
 import 'package:ggj2025_flutter/game.dart';
@@ -6,21 +8,25 @@ part 'enemy_band_state.dart';
 
 class EnemyBand extends PositionComponent with HasGameReference<GGJ25Game> {
   final EnemyBandState state = EnemyBandState();
+  final List<EnemyType> enemyTypes;
 
-  EnemyBand({super.position}) : super(anchor: Anchor.center);
+  EnemyBand({super.position, required this.enemyTypes}) : super(anchor: Anchor.center);
+
+  factory EnemyBand.randomBand({
+    required Vector2 position,
+    required int bandSize,
+  }) =>
+      EnemyBand(
+        enemyTypes: List.generate(
+          bandSize,
+          (_) => EnemyType.values[Random().nextInt(EnemyType.values.length - 1)],
+        ),
+        position: position,
+      );
 
   @override
   Future<void> onLoad() async {
-    addEnemy(EnemyType.jellyfish);
-    addEnemy(EnemyType.octopus);
-    addEnemy(EnemyType.eel);
-    // addEnemy(EnemyType.anglerfish);
-    // addEnemy(EnemyType.swordfish);
-    //
-    // addEnemy(EnemyType.floater);
-    // addEnemy(EnemyType.floater_knight);
-    // addEnemy(EnemyType.siren_warrior);
-    // addEnemy(EnemyType.exploding_fish);
+    enemyTypes.forEach(addEnemy);
 
     flipHorizontally();
 
