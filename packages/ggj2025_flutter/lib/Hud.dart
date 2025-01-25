@@ -69,12 +69,12 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
 
   @override
   void update(double dt) {
+    time += dt;
     _updateRhytm();
     _updateComboList();
   }
 
   void _updateRhytm() {
-    time += dt;
     print(game.combo.time % ComboHandler.timeBetweenNextPresses);
     if ((game.combo.time % ComboHandler.timeBetweenNextPresses) - 0.1 < 0.2) {
       rhytmIndicator.size = Vector2(24, 48);
@@ -108,18 +108,18 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
     for (var combo in matchingCombos) {
       var indexOfComboList = matchingCombos.indexOf(combo).toDouble();
       var text = TextComponent(
-        text: combo.Name + ':',
-        position: Vector2(200, 550 + 60 * indexOfComboList),
+        text: combo.name + ':',
+        position: Vector2(100 - gameRef.camera.viewport.size.x / 2, 550 + 60 * indexOfComboList),
         size: Vector2(20, 20),
         anchor: Anchor.center,
         scale: Vector2(1, 1)
       );
       add(text);
       comboList.add(text);
-      combo.Inputs.asMap().forEach((indexOfInput, button) {
+      combo.inputs.asMap().forEach((indexOfInput, button) {
         if(indexWhereToStartDisplayingCombo > indexOfInput) return;
-        ;var inputUiPosition = Vector2(
-          310 + (indexOfInput - indexWhereToStartDisplayingCombo) * 40,
+          var inputUiPosition = Vector2(
+          210 + (indexOfInput - indexWhereToStartDisplayingCombo) * 40 - gameRef.camera.viewport.size.x / 2,
           550 + 60 * indexOfComboList);
         var spriteToAdd = SpriteComponent(
           sprite: _spritePathForButton(button),
