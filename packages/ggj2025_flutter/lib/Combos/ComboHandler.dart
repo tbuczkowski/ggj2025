@@ -37,16 +37,16 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
     time += dt;
     timeSinceLastBeat += dt;
     if (timeSinceLastBeat > timeBetweenNextPresses + marginOfTimeError) {
-      log('Outside rhythm window (1)');
+      // log('Outside rhythm window (1)');
       timeSinceLastBeat -= timeBetweenNextPresses;
       gameIsInRhytmWindow = false;
       // noteAlraedyHitInTHisBit = false;
     } else if (timeSinceLastBeat > timeBetweenNextPresses - marginOfTimeError) {
       if (!gameIsInRhytmWindow) GameAudioPlayer.playEffect(SfxAssets.metro, 0.03);
-      log('In rhythm!');
+      // log('In rhythm!');
       gameIsInRhytmWindow = true;
     } else {
-      log('Outside rhythm window (2)');
+      // log('Outside rhythm window (2)');
       gameIsInRhytmWindow = false;
     }
   }
@@ -54,8 +54,8 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
   void comboInput(String input) {
     log(gameIsInRhytmWindow.toString());
 
-    print(timeBetweenNextPresses);
-    print(time % timeBetweenNextPresses);
+    // print(timeBetweenNextPresses);
+    // print(time % timeBetweenNextPresses);
 
     if (!gameIsInRhytmWindow) {
       _resetCombo();

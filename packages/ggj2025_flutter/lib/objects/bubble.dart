@@ -15,6 +15,8 @@ class Bubble extends SpriteAnimationGroupComponent<bool> with CollisionCallbacks
 
   Bubble({super.position, super.size}) : super(anchor: Anchor.center, priority: 999);
 
+  int get strength => _strength.toInt();
+
   @override
   Future<void> onLoad() async {
     // sprite = Sprite(game.images.fromCache(GfxAssets.bubble));
@@ -67,6 +69,17 @@ class Bubble extends SpriteAnimationGroupComponent<bool> with CollisionCallbacks
     }
 
     super.onCollision(intersectionPoints, other);
+  }
+
+  void onBuffDefence() {
+    _strength += 10;
+
+    add(SequenceEffect([
+      ColorEffect(Colors.green, EffectController(duration: 0.1), opacityFrom: 0, opacityTo: 1),
+      ScaleEffect.by(Vector2.all(2), EffectController(duration: 0.3)),
+      ColorEffect(Colors.green, EffectController(duration: 0.2), opacityFrom: 1, opacityTo: 0),
+      ScaleEffect.by(Vector2.all(0.5), EffectController(duration: 0.3)),
+    ]));
   }
 
   @override

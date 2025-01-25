@@ -126,4 +126,8 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
       game.parallaxComponent.parallax?.baseVelocity = Vector2(state.movementSpeed, 0);
 
   bool hasEnemyBandAhead() => game.world.children.any((c) => c is EnemyBand);
+
+  void buffDefence() {
+    bubble.onBuffDefence();
+  }
 }
