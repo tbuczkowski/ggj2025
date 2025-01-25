@@ -1,14 +1,17 @@
 import 'dart:developer';
 
-import 'DoggoCombo.dart';
+import 'package:ggj2025_flutter/actors/heroes/hero.dart';
+import 'package:ggj2025_flutter/game.dart';
 
-class DoggoComboHandler {
-  List<DoggoCombo> combos = _allCombos();
+import 'Combo.dart';
+
+class ComboHandler {
+  List<Combo> combos = _allCombos();
   int currentIndexOfHitToMatch = 0;
   DateTime? momentOfPreviousInput = null;
-  List<DoggoCombo> currentlyMatchingCombos = _allCombos();
+  List<Combo> currentlyMatchingCombos = _allCombos();
 
-  void comboInput(String input) {
+  void comboInput(String input, Hero hero, GGJ25Game game) {
     var now = DateTime.now();
     momentOfPreviousInput = momentOfPreviousInput ?? now;
     if(!_isWithinComboMargin(now)){
@@ -18,7 +21,7 @@ class DoggoComboHandler {
     if(_comboIsFinished()){
       var comboToExecute = currentlyMatchingCombos[0].ComboEffect;
       log(currentlyMatchingCombos[0].Name + ' will fire');
-      comboToExecute();
+      comboToExecute(hero, game);
       _resetCombo();
     } else {
       currentIndexOfHitToMatch++;
@@ -49,10 +52,10 @@ class DoggoComboHandler {
     return timeSincePreviousInput < 400 && timeSincePreviousInput > 100;
   }
 
-  static List<DoggoCombo> _allCombos() {
+  static List<Combo> _allCombos() {
     return [
-      new DoggoCombo(["bork", "bork", "bork"], "bork overdrive", () => {log('am doggo')}),
-      new DoggoCombo(["bork", "bonk"], "reinforced bonk", () => {log('tons of damage')})
+      new Combo(["bork", "bork", "bork"], "bork overdrive", (hero, game) => {log('am doggo')}),
+      new Combo(["bork", "bonk"], "reinforced bonk", (hero, game) => {log('tons of damage')})
     ];
   }
 }

@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "ggj2025_flutter",
+            "cwd": "packages\\ggj2025_flutter",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "ggj2025_flutter (profile mode)",
+            "cwd": "packages\\ggj2025_flutter",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "ggj2025_flutter (release mode)",
+            "cwd": "packages\\ggj2025_flutter",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

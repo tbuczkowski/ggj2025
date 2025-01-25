@@ -1,7 +1,10 @@
 import 'dart:math';
 
+import 'dart:developer';
+
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:ggj2025_flutter/Combos/ComboHandler.dart';
 import 'package:ggj2025_flutter/actors/heroes/hero.dart';
 import 'package:ggj2025_flutter/game.dart';
 import 'package:ggj2025_flutter/objects/bubble.dart';
@@ -12,6 +15,7 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
   final double extent = 500;
 
   final FellowshipState state = FellowshipState();
+  final ComboHandler inputCombos = ComboHandler();
 
   late Bubble bubble;
 
@@ -59,10 +63,17 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
       movementSpeed = 0.0;
     }
 
+    if(event is KeyDownEvent) {
+      inputCombos.comboInput(_comboElement(keysPressed), state.currentHero, game);
+
     game.parallaxComponent.parallax?.baseVelocity = Vector2(movementSpeed, 0);
     state.currentHero.handleInput(event, keysPressed);
+  }
 
-    return super.onKeyEvent(event, keysPressed);
+  String _comboElement(Set<LogicalKeyboardKey> keysPressed){
+    if(keysPressed.contains(LogicalKeyboardKey.keyQ)) return 'bork';
+    if(keysPressed.contains(LogicalKeyboardKey.keyW)) return 'bonk';
+    return '';
   }
 
   @override

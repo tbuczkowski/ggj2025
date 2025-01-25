@@ -5,7 +5,7 @@ import 'package:flame/parallax.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart' hide Hero;
 import 'package:flutter/material.dart';
-import 'package:ggj2025_flutter/Combos/DoggoComboHandler.dart';
+import 'package:flutter/services.dart';
 import 'package:ggj2025_flutter/actors/fellowship.dart';
 import 'package:ggj2025_flutter/actors/heroes/hero.dart';
 import 'package:ggj2025_flutter/camera_target.dart';
@@ -31,7 +31,6 @@ class GGJ25GameWidget extends StatelessWidget {
 
 class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents {
   late final ParallaxComponent parallaxComponent;
-  final DoggoComboHandler doggoInputCombos = DoggoComboHandler();
   late final ConfigManager configManager;
   late final LevelConfig currentLevelConfig;
   late final Fellowship fellowship;
@@ -137,17 +136,4 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     remove(red!);
     red = null;
   }
-
-  // @override
-  // KeyEventResult onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-  //   final isKeyDown = event is KeyDownEvent;
-  //
-  //   final isSpace = keysPressed.contains(LogicalKeyboardKey.space);
-  //
-  //   if (isSpace && isKeyDown) {
-  //     doggoInputCombos.comboInput('bork');
-  //     return KeyEventResult.handled;
-  //   }
-  //   return KeyEventResult.ignored;
-  // }
 }
