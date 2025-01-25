@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flame/components.dart';
 import 'package:ggj2025_flutter/Combos/ComboHandler.dart';
@@ -7,6 +8,9 @@ import 'package:ggj2025_flutter/gfx_assets.dart';
 
 class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
   late SpriteComponent rhytmIndicator;
+  List<Component> comboList = [];
+  Sprite greenButtonSprite = Sprite(game.images.fromCache(GfxAssets.redButton));
+  Sprite redButtonSprite = Sprite(game.images.fromCache(GfxAssets.greenButton));
 
   Hud({
     super.position,
@@ -65,6 +69,11 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
 
   @override
   void update(double dt) {
+    _updateRhytm();
+    _updateComboList();
+  }
+
+  void _updateRhytm() {
     time += dt;
     print(game.combo.time % ComboHandler.timeBetweenNextPresses);
     if ((game.combo.time % ComboHandler.timeBetweenNextPresses) - 0.1 < 0.2) {
@@ -88,6 +97,47 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
       if (bar.position.x < 0) {
         bar.position = Vector2(bars.length * 100, 12);
       }
+    }
+  }
+
+  void _updateComboList() {
+    removeAll(comboList);
+    comboList = [];
+    var matchingCombos = game.combo.currentlyMatchingCombos;
+    var indexWhereToStartDisplayingCombo = game.combo.currentIndexOfHitToMatch;
+    for (var combo in matchingCombos) {
+      var indexOfComboList = matchingCombos.indexOf(combo).toDouble();
+      var text = TextComponent(
+        text: combo.Name + ':',
+        position: Vector2(200, 550 + 60 * indexOfComboList),
+        size: Vector2(20, 20),
+        anchor: Anchor.center,
+        scale: Vector2(1, 1)
+      );
+      add(text);
+      comboList.add(text);
+      combo.Inputs.asMap().forEach((indexOfInput, button) {
+        if(indexWhereToStartDisplayingCombo > indexOfInput) return;
+        ;var inputUiPosition = Vector2(
+          310 + (indexOfInput - indexWhereToStartDisplayingCombo) * 40,
+          550 + 60 * indexOfComboList);
+        var spriteToAdd = SpriteComponent(
+          sprite: _spritePathForButton(button),
+          position: inputUiPosition,
+          size: Vector2.all(20),
+          anchor: Anchor.center,
+          scale: Vector2(2, 2));
+        comboList.add(spriteToAdd);
+        add(spriteToAdd);
+      });
+    }
+  }
+
+  Sprite? _spritePathForButton(String input) {
+    switch(input){
+      case 'bonk': return greenButtonSprite;
+      case 'bork': return redButtonSprite;
+      default: return null;
     }
   }
 }
