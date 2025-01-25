@@ -50,6 +50,6 @@ class Ground extends SpriteComponent with HasGameReference<GGJ25Game> {
       ),
     );
 
-    add(RectangleHitbox(collisionType: CollisionType.passive));
+    add(RectangleHitbox(collisionType: CollisionType.inactive));
   }
 }
