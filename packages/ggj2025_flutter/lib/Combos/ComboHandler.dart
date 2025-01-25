@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:flame/components.dart';
 import 'package:ggj2025_flutter/actors/fellowship.dart';
-import 'package:ggj2025_flutter/actors/heroes/hero.dart';
 import 'package:ggj2025_flutter/game.dart';
 
 import 'Combo.dart';
@@ -14,12 +13,13 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
   int currentIndexOfHitToMatch = 0;
   List<Combo> currentlyMatchingCombos = _allCombos();
   bool gameIsInRhytmWindow = false;
+  // bool noteAlraedyHitInTHisBit = false;
   late Fellowship fellowship;
 
   static const double bpm = 135.0;
-  static const double timeBetweenNextPressesInDt = (1 / (bpm / 60)) * 1000000;
-  static const double beatTimeMargin = 0.05;
-  static const double marginOfTimeError = timeBetweenNextPressesInDt * beatTimeMargin;
+  static const double timeBetweenNextPresses = (1 / (bpm / 60));
+  static const double beatTimeMargin = 10;
+  static const double marginOfTimeError = timeBetweenNextPresses * beatTimeMargin;
 
   @override
   FutureOr<void> onLoad() {
@@ -31,17 +31,19 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
   void update(double dt) {
     super.update(dt);
     timeSinceLastBeat += dt;
-    if(timeSinceLastBeat > timeBetweenNextPressesInDt + marginOfTimeError) {
-      timeSinceLastBeat -= timeBetweenNextPressesInDt;
-      gameIsInRhytmWindow = false;
-    } else if(timeSinceLastBeat > timeBetweenNextPressesInDt - marginOfTimeError) {
+    if(timeSinceLastBeat > timeBetweenNextPresses + marginOfTimeError) {
+      timeSinceLastBeat -= timeBetweenNextPresses;
+      gameIsInRhytmWindow = true;
+      // noteAlraedyHitInTHisBit = false;
+    } else if(timeSinceLastBeat > timeBetweenNextPresses - marginOfTimeError) {
       gameIsInRhytmWindow = true;
     } else {
-      gameIsInRhytmWindow = false;
+      gameIsInRhytmWindow = true;
     }
   }
 
   void comboInput(String input) {
+    log(gameIsInRhytmWindow.toString());
     if(!gameIsInRhytmWindow){
       _resetCombo();
     }
@@ -65,13 +67,13 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
     currentlyMatchingCombos = currentlyMatchingCombos
       .where((x) => x.Inputs[currentIndexOfHitToMatch] == input)
       .toList();
-      log(input + ' was pressed');
+      log(input + ' was pressed, that\'s note with index #' + currentIndexOfHitToMatch.toString());
   }
 
   void _resetCombo() {
     currentlyMatchingCombos = combos;
     currentIndexOfHitToMatch = 0;
-    log('combo reset');//todo some async binding with timer based combo system instead of ad hoc time measurement?
+    log('combo reset');
   }
 
   static List<Combo> _allCombos() {
