@@ -50,8 +50,9 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     configManager = ConfigManager();
     currentLevelConfig = configManager.config.levels[1];
 
-    List<ParallaxImageData> parallaxDataList =
-        currentLevelConfig.parallax.map((parallaxLayer) => ParallaxImageData(parallaxLayer)).toList();
+    List<ParallaxImageData> parallaxDataList = currentLevelConfig.parallax
+        .map((parallaxLayer) => ParallaxImageData(parallaxLayer))
+        .toList();
 
     fellowship = Fellowship(
       position: Vector2(
@@ -78,13 +79,18 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     world.add(fellowship);
     add(combo);
 
-    fellowship.addHero(HeroType.blue);
-    fellowship.addHero(HeroType.white);
-    fellowship.addHero(HeroType.pink);
+    // fellowship.addHero(HeroType.blue);
+    // fellowship.addHero(HeroType.white);
+    // fellowship.addHero(HeroType.pink);
     fellowship.addHero(HeroType.white);
     fellowship.addHero(HeroType.pink);
 
-    world.add(Grass(position: Vector2(128, 128), grassType: GrassType.grass1));
+    world.add(Grass(
+        position: Vector2(
+          0,
+          camera.viewport.size.y * 0.90 - 90,
+        ),
+        grassType: GrassType.grass1));
 
     _setupCamera();
 

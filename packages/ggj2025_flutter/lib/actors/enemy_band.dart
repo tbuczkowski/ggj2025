@@ -7,20 +7,20 @@ part 'enemy_band_state.dart';
 class EnemyBand extends PositionComponent with HasGameReference<GGJ25Game> {
   final EnemyBandState state = EnemyBandState();
 
-  EnemyBand({super.position});
+  EnemyBand({super.position}) : super(anchor: Anchor.center);
 
   @override
   Future<void> onLoad() async {
     addEnemy(EnemyType.jellyfish);
     addEnemy(EnemyType.octopus);
     addEnemy(EnemyType.eel);
-    addEnemy(EnemyType.anglerfish);
-    addEnemy(EnemyType.swordfish);
-
-    addEnemy(EnemyType.floater);
-    addEnemy(EnemyType.floater_knight);
-    addEnemy(EnemyType.siren_warrior);
-    addEnemy(EnemyType.exploding_fish);
+    // addEnemy(EnemyType.anglerfish);
+    // addEnemy(EnemyType.swordfish);
+    //
+    // addEnemy(EnemyType.floater);
+    // addEnemy(EnemyType.floater_knight);
+    // addEnemy(EnemyType.siren_warrior);
+    // addEnemy(EnemyType.exploding_fish);
 
     flipHorizontally();
 

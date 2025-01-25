@@ -21,7 +21,7 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
 
   static const double maxMovementSpeed = 25.0;
 
-  Fellowship({super.position});
+  Fellowship({super.position}) : super(priority: 2);
 
   @override
   Future<void> onLoad() async {

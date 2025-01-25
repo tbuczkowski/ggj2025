@@ -21,7 +21,7 @@ class EventGenerator {
 
   void addEventToScene(World world, Fellowship fellowship) {
     fellowship.stopWalking();
-    world.add(EnemyBand(position: Vector2(game.cameraTarget.position.x + 300, game.cameraTarget.position.y)));
+    world.add(EnemyBand(position: Vector2(fellowship.position.x + 1000, fellowship.position.y)));
   }
 
 }
