@@ -20,9 +20,8 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
   // late PositionComponent cameraTarget;
 
   static const double maxMovementSpeed = 25.0;
-  double movementSpeed;
 
-  Fellowship({super.position, this.movementSpeed = 0});
+  Fellowship({super.position});
 
   @override
   Future<void> onLoad() async {
@@ -53,21 +52,21 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
   @override
   bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     if (keysPressed.contains(LogicalKeyboardKey.arrowRight)) {
-      movementSpeed = maxMovementSpeed;
+      startWalking();
     }
 
     if (keysPressed.contains(LogicalKeyboardKey.arrowLeft)) {
-      movementSpeed = -maxMovementSpeed;
+      startWalking(-1);
     }
 
     if (keysPressed.contains(LogicalKeyboardKey.arrowDown)) {
-      movementSpeed = 0.0;
+      stopWalking();
     }
 
     if(event is KeyDownEvent) {
       combos.comboInput(_comboElement(keysPressed));
 
-      game.parallaxComponent.parallax?.baseVelocity = Vector2(movementSpeed, 0);
+      game.parallaxComponent.parallax?.baseVelocity = Vector2(state.movementSpeed, 0);
       state.currentHero.handleInput(event, keysPressed);
     }
 
@@ -89,8 +88,23 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
 
     state.currentHero.performAction();
 
-    position.x += dt * movementSpeed;
+    double distanceWalked = dt * state.movementSpeed;
+    position.x += distanceWalked;
+    state.distanceTravelledSinceLastEvent += distanceWalked;
   }
 
   bool get isDead => !children.any((e) => e is Bubble);
+
+  void stopWalking() {
+    state.movementSpeed = 0;
+    state.distanceTravelledSinceLastEvent = 0;
+    updateParallaxVelocity();
+  }
+
+  void startWalking([int direction = 1]) {
+    state.movementSpeed = direction * maxMovementSpeed;
+    updateParallaxVelocity();
+  }
+
+  void updateParallaxVelocity() => game.parallaxComponent.parallax?.baseVelocity = Vector2(state.movementSpeed, 0);
 }

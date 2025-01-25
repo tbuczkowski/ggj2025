@@ -4,18 +4,16 @@ import 'package:flame/input.dart';
 import 'package:flame/parallax.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart' hide Hero;
-import 'package:flutter/material.dart';
 import 'package:ggj2025_flutter/Combos/ComboHandler.dart';
 import 'package:ggj2025_flutter/actors/fellowship.dart';
 import 'package:ggj2025_flutter/actors/heroes/hero.dart';
 import 'package:ggj2025_flutter/camera_target.dart';
 import 'package:ggj2025_flutter/config/config_manager.dart';
+import 'package:ggj2025_flutter/event_generator.dart';
 import 'package:ggj2025_flutter/gfx_assets.dart';
 import 'package:ggj2025_flutter/objects/ground.dart';
-import 'package:ggj2025_flutter/objects/rock.dart';
 import 'package:ggj2025_flutter/sfx_assets.dart';
 
-import 'actors/enemy_band.dart';
 import 'objects/grass.dart';
 
 final GGJ25Game game = GGJ25Game();
@@ -35,6 +33,9 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   late final LevelConfig currentLevelConfig;
   late final Fellowship fellowship;
   late CameraTarget _cameraTarget;
+  final EventGenerator _eventGenerator = EventGenerator();
+
+  CameraTarget get cameraTarget => _cameraTarget;
   late final ComboHandler combo = ComboHandler();
 
   @override
@@ -61,7 +62,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
 
     parallaxComponent = await loadParallaxComponent(
       parallaxDataList,
-      baseVelocity: Vector2(fellowship.movementSpeed, 0),
+      baseVelocity: Vector2(fellowship.state.movementSpeed, 0),
       velocityMultiplierDelta: Vector2(1.25, 0),
     );
     add(parallaxComponent);
@@ -83,13 +84,9 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     fellowship.addHero(HeroType.white);
     fellowship.addHero(HeroType.pink);
 
-    world.add(Rock(position: Vector2(128, 32)));
     world.add(Grass(position: Vector2(128, 128), grassType: GrassType.grass1));
 
     _setupCamera();
-
-    EnemyBand enemyBand = EnemyBand(position: Vector2(300, 300));
-    add(enemyBand);
 
     await super.onLoad();
   }
@@ -106,12 +103,12 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
 
   @override
   void update(double dt) {
-    if (timeSinceLastRockDropped > 5) {
-      world.add(Rock(position: Vector2(128, 32)));
-      timeSinceLastRockDropped = 0;
-    }
+    _eventGenerator.updateTimeSinceLastEvent(dt);
+    _eventGenerator.addRandomRockAppearsEvent(world);
 
-    timeSinceLastRockDropped += dt;
+    if (_eventGenerator.shouldGenerateFightEvent(fellowship.state)) {
+      _eventGenerator.addEventToScene(world, fellowship);
+    }
 
     super.update(dt);
   }

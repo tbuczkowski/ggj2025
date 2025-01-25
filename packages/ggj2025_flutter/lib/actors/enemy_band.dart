@@ -4,8 +4,7 @@ import 'package:ggj2025_flutter/game.dart';
 
 part 'enemy_band_state.dart';
 
-class EnemyBand extends PositionComponent
-    with KeyboardHandler, HasGameReference<GGJ25Game> {
+class EnemyBand extends PositionComponent with HasGameReference<GGJ25Game> {
   final EnemyBandState state = EnemyBandState();
 
   EnemyBand({super.position});
@@ -23,12 +22,13 @@ class EnemyBand extends PositionComponent
     addEnemy(EnemyType.siren_warrior);
     addEnemy(EnemyType.exploding_fish);
 
+    flipHorizontally();
+
     return super.onLoad();
   }
 
   void addEnemy(EnemyType enemyType) {
-    Enemy enemy = Enemy.enemyFactories[enemyType]!
-        .call(Vector2(100.0 * state.enemies.length, 0));
+    Enemy enemy = Enemy.enemyFactories[enemyType]!.call(Vector2(100.0 * state.enemies.length, 0));
     state.enemies.add(enemy);
     add(enemy);
   }
@@ -42,5 +42,5 @@ class EnemyBand extends PositionComponent
     // state.currentHero.performAction();
   }
 
-bool get isDead => false;
+  bool get isDead => false;
 }
