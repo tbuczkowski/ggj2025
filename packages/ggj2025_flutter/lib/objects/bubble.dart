@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:ggj2025_flutter/game.dart';
 import 'package:ggj2025_flutter/gfx_assets.dart';
 import 'package:ggj2025_flutter/objects/missile.dart';
+import 'package:ggj2025_flutter/sfx_assets.dart';
 
 class Bubble extends SpriteAnimationGroupComponent<bool> with CollisionCallbacks, HasGameReference<GGJ25Game> {
   int _strength = 100;
@@ -50,10 +53,12 @@ class Bubble extends SpriteAnimationGroupComponent<bool> with CollisionCallbacks
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (_strength <= 0) return;
     if (other is Missile && other.isActive) {
       print('HIT! Strength left: $_strength');
       this._strength -= other.power;
       other.playBreakingEffect();
+      GameAudioPlayer.playEffect([SfxAssets.bounce1, SfxAssets.bounce2, SfxAssets.bounce3][Random().nextInt(3)]);
       add(SequenceEffect([
         ColorEffect(Colors.white, EffectController(duration: 0.1), opacityFrom: 0, opacityTo: 1),
         ColorEffect(Colors.white, EffectController(duration: 0.2), opacityFrom: 1, opacityTo: 0),
