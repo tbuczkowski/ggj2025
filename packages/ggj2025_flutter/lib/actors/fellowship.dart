@@ -19,7 +19,7 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
 
   // late PositionComponent cameraTarget;
 
-  static const double maxMovementSpeed = 25.0;
+  static const double maxMovementSpeed = 100.0;
 
   Fellowship({super.position}) : super(priority: 2);
 
@@ -63,7 +63,7 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
       stopWalking();
     }
 
-    if(event is KeyDownEvent) {
+    if (event is KeyDownEvent) {
       combos.comboInput(_comboElement(keysPressed));
 
       game.parallaxComponent.parallax?.baseVelocity = Vector2(state.movementSpeed, 0);
@@ -73,9 +73,9 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
     return super.onKeyEvent(event, keysPressed);
   }
 
-  String _comboElement(Set<LogicalKeyboardKey> keysPressed){
-    if(keysPressed.contains(LogicalKeyboardKey.keyQ)) return 'bork';
-    if(keysPressed.contains(LogicalKeyboardKey.keyW)) return 'bonk';
+  String _comboElement(Set<LogicalKeyboardKey> keysPressed) {
+    if (keysPressed.contains(LogicalKeyboardKey.keyQ)) return 'bork';
+    if (keysPressed.contains(LogicalKeyboardKey.keyW)) return 'bonk';
     return '';
   }
 
@@ -96,12 +96,14 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
   bool get isDead => !children.any((e) => e is Bubble);
 
   void stopWalking() {
+    state.heroes.forEach((hero) => hero.current = HeroState.idle);
     state.movementSpeed = 0;
     state.distanceTravelledSinceLastEvent = 0;
     updateParallaxVelocity();
   }
 
   void startWalking([int direction = 1]) {
+    state.heroes.forEach((hero) => hero.current = HeroState.walk);
     state.movementSpeed = direction * maxMovementSpeed;
     updateParallaxVelocity();
   }

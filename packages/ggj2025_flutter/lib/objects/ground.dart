@@ -52,4 +52,11 @@ class Ground extends SpriteComponent with HasGameReference<GGJ25Game> {
 
     add(RectangleHitbox(collisionType: CollisionType.inactive));
   }
+
+  @override
+  void update(double dt) {
+    if (game.fellowship.position.x > position.x + 100) {
+      position = Vector2(position.x + 1600, position.y);
+    }
+  }
 }

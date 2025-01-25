@@ -50,9 +50,8 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     configManager = ConfigManager();
     currentLevelConfig = configManager.config.levels[1];
 
-    List<ParallaxImageData> parallaxDataList = currentLevelConfig.parallax
-        .map((parallaxLayer) => ParallaxImageData(parallaxLayer))
-        .toList();
+    List<ParallaxImageData> parallaxDataList =
+        currentLevelConfig.parallax.map((parallaxLayer) => ParallaxImageData(parallaxLayer)).toList();
 
     fellowship = Fellowship(
       position: Vector2(
@@ -64,11 +63,11 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     parallaxComponent = await loadParallaxComponent(
       parallaxDataList,
       baseVelocity: Vector2(fellowship.state.movementSpeed, 0),
-      velocityMultiplierDelta: Vector2(1.25, 0),
+      velocityMultiplierDelta: Vector2(1.01, 0),
     );
     add(parallaxComponent);
 
-    for (int i = -10; i < 100; i++) {
+    for (int i = -10; i < 90; i++) {
       world.add(Ground(
           position: Vector2(
         16.0 * i,
