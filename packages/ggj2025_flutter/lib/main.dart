@@ -44,15 +44,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<(SerialMessageType, String)> receivedData = [];
 
+  var future;
+
   @override
   void initState() {
     super.initState();
-    // initPorts();
+    future = initPorts();
   }
 
+  bool started = false;
+
   Future<void> initPorts() async {
-    // port = SerialPort('/dev/cu.usbmodem11201');
-    port = SerialPort('COM3');
+    print(SerialPort.availablePorts);
+    port = SerialPort('/dev/cu.usbmodem11301');
+    // port = SerialPort('COM3');
     port.openReadWrite();
     // this reboots the python program running on rpi
     port.write(Uint8List.fromList('\x03\x04'.codeUnits));
@@ -82,7 +87,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return GGJ25GameWidget();
+    return !started
+        ? Scaffold(
+            body: Center(
+              child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      started = true;
+                    });
+                  },
+                  child: Text('start')),
+            ),
+          )
+        : GGJ25GameWidget();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,

@@ -15,7 +15,7 @@ class Thunderstrike extends Missile {
           ),
           canHurtPlayer: false,
           size: Vector2.all(128.0),
-          lifetime: 4,
+          lifetime: 2,
         );
 
   @override

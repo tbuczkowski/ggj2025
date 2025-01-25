@@ -2,7 +2,7 @@ import 'package:flame_audio/bgm.dart';
 import 'package:flame_audio/flame_audio.dart';
 
 sealed class SfxAssets {
-  static const String backgroundMusic = 'test.wav';
+  static const String backgroundMusic = 'bgm.wav';
   static const String bongo1 = 'bongo3.wav';
   static const String bongo2 = 'bongo4.wav';
   static const String bongo3 = 'bongo1.wav';
@@ -23,7 +23,7 @@ class GameAudioPlayer {
       bgm.stop();
     }
 
-    bgm.play(asset, volume: 0.0);
+    bgm.play(asset, volume: 0.05);
   }
 
   static void playEffect(String asset, [double? volume]) => FlameAudio.play(asset, volume: volume ?? 0.2);
