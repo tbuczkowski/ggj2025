@@ -67,7 +67,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     );
     add(parallaxComponent);
 
-    for (int i = -10; i < 90; i++) {
+    for (int i = -20; i < 80; i++) {
       world.add(Ground(
           position: Vector2(
         16.0 * i,

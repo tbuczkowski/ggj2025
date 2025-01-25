@@ -55,7 +55,7 @@ class Ground extends SpriteComponent with HasGameReference<GGJ25Game> {
 
   @override
   void update(double dt) {
-    if (game.fellowship.position.x > position.x + 100) {
+    if (game.fellowship.position.x > position.x + 200) {
       position = Vector2(position.x + 1600, position.y);
     }
   }

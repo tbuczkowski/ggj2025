@@ -5,12 +5,11 @@ import 'package:ggj2025_flutter/game.dart';
 import 'package:ggj2025_flutter/objects/rock.dart';
 
 class EventGenerator {
-
   double timeSinceLastEvent = 0;
 
   void updateTimeSinceLastEvent(double dt) => timeSinceLastEvent += dt;
 
-  bool shouldGenerateFightEvent(FellowshipState state) => state.distanceTravelledSinceLastEvent >= 100;
+  bool shouldGenerateFightEvent(FellowshipState state) => state.distanceTravelledSinceLastEvent >= 500;
 
   void addRandomRockAppearsEvent(World world) {
     if (timeSinceLastEvent > 50) {
@@ -23,5 +22,4 @@ class EventGenerator {
     fellowship.stopWalking();
     world.add(EnemyBand(position: Vector2(fellowship.position.x + 1000, fellowship.position.y)));
   }
-
 }
