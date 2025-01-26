@@ -103,7 +103,8 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
     }
     currentlyMatchingCombos = [...Combos.all].where(
       (c) {
-        return c.inputs.join() == currentComboState.join();
+        print((c.inputs.join(), currentComboState.join()));
+        return c.inputs.join().startsWith(currentComboState.join());
       },
     ).toList();
 
