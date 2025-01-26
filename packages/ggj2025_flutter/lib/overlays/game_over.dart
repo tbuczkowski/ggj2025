@@ -37,6 +37,12 @@ class GameOver extends StatelessWidget {
                     : 'Best score is: ${game.bestScore}',
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
+              const SizedBox(height: 40),
+              Text(
+                'Press red and green to restart',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+              const SizedBox(height: 40),
               SizedBox(
                 width: 200,
                 height: 75,
