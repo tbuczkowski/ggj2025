@@ -68,7 +68,7 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
   }
 
   void _updateRhytm() {
-    print(game.combo.time % ComboHandler.timeBetweenNextPresses);
+    //print(game.combo.time % ComboHandler.timeBetweenNextPresses);
     if ((game.combo.time % ComboHandler.timeBetweenNextPresses) - 0.1 < 0.2) {
       rhytmIndicator.size = Vector2(24, 48);
       // rhytmIndicator.size = Vector2.all(0)
@@ -98,83 +98,71 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
     removeAll(comboList);
     var components = _comboComponentsToDisplay();
     comboList = components
-      .map((x) {
-        var res = List<Component>.from(x.buttons);
-        res.add(x.description);
-        return res;
-      })
-      .expand((x) => x)
-      .toList();
+        .map((x) {
+          var res = List<Component>.from(x.buttons);
+          res.add(x.description);
+          return res;
+        })
+        .expand((x) => x)
+        .toList();
     addAll(comboList);
   }
 
-  List<ComboInfo> _comboComponentsToDisplay(){
+  List<ComboInfo> _comboComponentsToDisplay() {
     const numberOfRows = 2;
     return _combosToDisplay().asMap().entries.map((x) {
       var baseXPos = _xBasePositionForComboInfo(x.key, numberOfRows);
       var baseYPos = _yBasePositionForComboInfo(x.key, numberOfRows);
       return ComboInfo(
-        TextComponent(
-          text: x.value.name + ':',
-          position: Vector2(
-              baseXPos, 
-              baseYPos),
-          size: Vector2(20, 20),
-          anchor: Anchor.centerLeft,
-          scale: Vector2(1, 1)),
-        x.value.inputs.asMap().entries.map((y) {
-          return SpriteComponent(
-            sprite: _spritePathForButton(y.value),
-            position: Vector2(
-              baseXPos + 170 + 40 * y.key, 
-              baseYPos),
-            size: Vector2.all(20),
-            anchor: Anchor.centerLeft,
-            scale: Vector2(2, 2));
-        }).toList());
+          TextComponent(
+              text: x.value.name + ':',
+              position: Vector2(baseXPos, baseYPos),
+              size: Vector2(20, 20),
+              anchor: Anchor.centerLeft,
+              scale: Vector2(1, 1)),
+          x.value.inputs.asMap().entries.map((y) {
+            return SpriteComponent(
+                sprite: _spritePathForButton(y.value),
+                position: Vector2(baseXPos + 170 + 40 * y.key, baseYPos),
+                size: Vector2.all(20),
+                anchor: Anchor.centerLeft,
+                scale: Vector2(2, 2));
+          }).toList());
     }).toList();
   }
 
-  List<Combo> _combosToDisplay(){
+  List<Combo> _combosToDisplay() {
     var matchingCombos = game.combo.currentlyMatchingCombos;
     var indexWhereToStartDisplayingCombo = game.combo.currentIndexOfHitToMatch;
     return matchingCombos.map((combo) {
       return Combo(
-        combo.inputs
-          .asMap()
-          .entries
-          .where((x) => indexWhereToStartDisplayingCombo <= x.key)
-          .map((x) => x.value)
-          .toList(),
-        combo.name, 
-        combo.comboEffect);
-    })
-    .toList();
+          combo.inputs
+              .asMap()
+              .entries
+              .where((x) => indexWhereToStartDisplayingCombo <= x.key)
+              .map((x) => x.value)
+              .toList(),
+          combo.name,
+          combo.comboEffect);
+    }).toList();
   }
 
-  double _yBasePositionForComboInfo(int indexOfCombo, int numberOfRows){
+  double _yBasePositionForComboInfo(int indexOfCombo, int numberOfRows) {
     var bottomOfScreen = gameRef.camera.viewport.size.y;
     return bottomOfScreen * 0.9 - 60 * (indexOfCombo % numberOfRows);
   }
 
-  double _xBasePositionForComboInfo(int indexOfCombo, int numberOfRows){
+  double _xBasePositionForComboInfo(int indexOfCombo, int numberOfRows) {
     var leftSide = -gameRef.camera.viewport.size.x / 2;
     return leftSide + (indexOfCombo / numberOfRows).toInt() * 500;
   }
-
-
-
-
-
-
-
 
   //   for (var combo in matchingCombos) {
   //     var indexOfComboList = matchingCombos.indexOf(combo).toDouble();
   //     var text = TextComponent(
   //         text: combo.name + ':',
   //         position: Vector2(
-  //             100 - gameRef.camera.viewport.size.x / 2, 
+  //             100 - gameRef.camera.viewport.size.x / 2,
   //             gameRef.camera.viewport.size.y - 100 - 60 * indexOfComboList),
   //         size: Vector2(20, 20),
   //         anchor: Anchor.center,

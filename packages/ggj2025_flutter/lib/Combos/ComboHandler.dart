@@ -117,14 +117,14 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
     // currentlyMatchingCombos =
     //     currentlyMatchingCombos.where((x) => x.inputs[currentIndexOfHitToMatch] == input).toList();
     // log(input + ' was pressed, that\'s note with index #' + currentIndexOfHitToMatch.toString());
-    log(input + ' was pressed, that\'s note with index #' + currentIndexOfHitToMatch.toString());
-    log('Current streak: ${currentComboState.join('|')}');
+    //log(input + ' was pressed, that\'s note with index #' + currentIndexOfHitToMatch.toString());
+    //log('Current streak: ${currentComboState.join('|')}');
   }
 
   void _resetCombo() {
     currentlyMatchingCombos = [...Combos.all];
     currentIndexOfHitToMatch = 0;
     currentComboState = [];
-    log('combo reset');
+    //log('combo reset');
   }
 }
