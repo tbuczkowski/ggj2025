@@ -68,6 +68,7 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
     }
     if (!gameIsInRhytmWindow) {
       _resetCombo();
+      game.scoreComponent.resetMultiplier();
       (switch (input) {
         "bork" => GameAudioPlayer.playEffect(SfxAssets.fail1),
         "bonk" => GameAudioPlayer.playEffect(SfxAssets.fail2),
@@ -82,6 +83,7 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
     });
     _appendToCombo(input);
     if (_comboIsFinished()) {
+      game.scoreComponent.increaseMultiplier();
       var comboToExecute = currentlyMatchingCombos[0].comboEffect;
       log(currentlyMatchingCombos[0].name + ' will fire');
       comboToExecute(game);

@@ -157,6 +157,7 @@ abstract class Enemy extends SpriteAnimationGroupComponent<EnemyState>
     if (_health <= 0) {
       current = EnemyState.death;
       animationTicker?.onComplete = removeFromParent;
+      game.scoreComponent.addPoints(10);
     }
 
     super.onCollision(intersectionPoints, other);
