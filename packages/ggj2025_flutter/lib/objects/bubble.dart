@@ -79,7 +79,9 @@ class Bubble extends SpriteAnimationGroupComponent<bool> with CollisionCallbacks
       ScaleEffect.by(Vector2.all(2), EffectController(duration: 0.3)),
       ColorEffect(Colors.green, EffectController(duration: 1.6), opacityFrom: 1, opacityTo: 0),
       ScaleEffect.by(Vector2.all(0.5), EffectController(duration: 0.1)),
-    ]));
+    ], onComplete: () {
+      game.fellowship.finishAttack();
+    }));
   }
 
   @override

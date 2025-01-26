@@ -129,9 +129,9 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
     updateParallaxVelocity();
   }
 
-  void attack() {
+  void attack(HeroType type) {
     actionInProgress = true;
-    state.heroes.forEach((hero) => hero.attack());
+    state.heroes.firstWhere((hero) => hero.heroType == type).attack();
     state.movementSpeed = 0;
     updateParallaxVelocity();
   }
