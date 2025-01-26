@@ -1,3 +1,4 @@
+import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
@@ -15,6 +16,7 @@ import 'package:ggj2025_flutter/event_generator.dart';
 import 'package:ggj2025_flutter/fellowship_hud.dart';
 import 'package:ggj2025_flutter/gfx_assets.dart';
 import 'package:ggj2025_flutter/objects/ground.dart';
+import 'package:ggj2025_flutter/overlays/game_over.dart';
 import 'package:ggj2025_flutter/score_component.dart';
 import 'package:ggj2025_flutter/sfx_assets.dart';
 
@@ -29,7 +31,9 @@ class GGJ25GameWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Focus(
       onKey: (focus, onKey) => KeyEventResult.handled,
-      child: GameWidget(game: game),
+      child: GameWidget<GGJ25Game>(game: game, overlayBuilderMap: {
+        'GameOver': (_, game) => GameOver(game: game),
+      },),
     );
   }
 }
@@ -64,6 +68,21 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
         .map((parallaxLayer) => ParallaxImageData(parallaxLayer))
         .toList();
 
+    parallaxComponent = await loadParallaxComponent(
+      parallaxDataList,
+      baseVelocity: Vector2(0, 0),
+      velocityMultiplierDelta: Vector2(1.01, 0),
+    );
+
+    add(parallaxComponent);
+    add(combo);
+
+    _loadWorld();
+
+    await super.onLoad();
+  }
+
+  void _loadWorld() {
     _fellowship = Fellowship(
       position: Vector2(
         0,
@@ -71,19 +90,17 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
       ),
     );
 
-    parallaxComponent = await loadParallaxComponent(
-      parallaxDataList,
-      baseVelocity: Vector2(fellowship.state.movementSpeed, 0),
-      velocityMultiplierDelta: Vector2(1.01, 0),
-    );
-    add(parallaxComponent);
+    world.add(fellowship);
+
+    fellowship.addHero(HeroType.white);
+    fellowship.addHero(HeroType.pink);
 
     for (int i = -20; i < 80; i++) {
       world.add(Ground(
           position: Vector2(
-        16.0 * i,
-        camera.viewport.size.y * 0.90,
-      )));
+            16.0 * i,
+            camera.viewport.size.y * 0.90,
+          )));
 
       if (i % 4 == 0)
         world.add(
@@ -94,17 +111,9 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
         );
     }
 
-    world.add(fellowship);
-    add(combo);
-
-    fellowship.addHero(HeroType.white);
-    fellowship.addHero(HeroType.pink);
-
     _setupCamera();
 
     insertNextEvent();
-
-    await super.onLoad();
   }
 
   void _setupCamera() {
@@ -160,5 +169,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
 
   void resetWorld() {
     game.world = World();
+    camera.viewport = MaxViewport();
+    _loadWorld();
   }
 }
