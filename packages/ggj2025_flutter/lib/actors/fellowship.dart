@@ -88,6 +88,7 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
       state.heroes.forEach((h) => h.die());
       if (!children.any((c) => c is Hero)) {
         removeFromParent();
+        game.resetWorld();
       }
 
       return;

@@ -20,7 +20,7 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
   double timeSinceLastComboInput = 0;
 
   // bool noteAlraedyHitInTHisBit = false;
-  late Fellowship fellowship;
+  Fellowship get fellowship => game.fellowship;
 
   static const double bpm = 120.0;
   static const double timeBetweenNextPresses = (1 / (bpm / 60));
@@ -29,7 +29,6 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
 
   @override
   FutureOr<void> onLoad() {
-    fellowship = game.fellowship;
     return super.onLoad();
   }
 

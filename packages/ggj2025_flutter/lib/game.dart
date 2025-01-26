@@ -1,3 +1,4 @@
+import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
@@ -64,6 +65,21 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
         .map((parallaxLayer) => ParallaxImageData(parallaxLayer))
         .toList();
 
+    parallaxComponent = await loadParallaxComponent(
+      parallaxDataList,
+      baseVelocity: Vector2(0, 0),
+      velocityMultiplierDelta: Vector2(1.01, 0),
+    );
+
+    add(parallaxComponent);
+    add(combo);
+
+    _loadWorld();
+
+    await super.onLoad();
+  }
+
+  void _loadWorld() {
     _fellowship = Fellowship(
       position: Vector2(
         0,
@@ -71,19 +87,17 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
       ),
     );
 
-    parallaxComponent = await loadParallaxComponent(
-      parallaxDataList,
-      baseVelocity: Vector2(fellowship.state.movementSpeed, 0),
-      velocityMultiplierDelta: Vector2(1.01, 0),
-    );
-    add(parallaxComponent);
+    world.add(fellowship);
+
+    fellowship.addHero(HeroType.white);
+    fellowship.addHero(HeroType.pink);
 
     for (int i = -20; i < 80; i++) {
       world.add(Ground(
           position: Vector2(
-        16.0 * i,
-        camera.viewport.size.y * 0.90,
-      )));
+            16.0 * i,
+            camera.viewport.size.y * 0.90,
+          )));
 
       if (i % 4 == 0)
         world.add(
@@ -94,17 +108,9 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
         );
     }
 
-    world.add(fellowship);
-    add(combo);
-
-    fellowship.addHero(HeroType.white);
-    fellowship.addHero(HeroType.pink);
-
     _setupCamera();
 
     insertNextEvent();
-
-    await super.onLoad();
   }
 
   void _setupCamera() {
@@ -160,5 +166,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
 
   void resetWorld() {
     game.world = World();
+    camera.viewport = MaxViewport();
+    _loadWorld();
   }
 }
