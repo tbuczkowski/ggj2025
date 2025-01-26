@@ -38,5 +38,5 @@ class FellowshipHud extends PositionComponent with HasGameReference<GGJ25Game> {
     _bubbleStrengthValue.text = _bubbleStrengthText;
   }
 
-  String get _bubbleStrengthText => '${game.fellowship.bubble.strength}';
+  String get _bubbleStrengthText => 'o2: ${game.fellowship.bubble.strength}';
 }
