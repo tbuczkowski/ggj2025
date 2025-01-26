@@ -6,6 +6,7 @@ import 'package:ggj2025_flutter/Combos/Combo.dart';
 import 'package:ggj2025_flutter/Combos/ComboHandler.dart';
 import 'package:ggj2025_flutter/game.dart';
 import 'package:ggj2025_flutter/gfx_assets.dart';
+import 'package:ggj2025_flutter/objects/ui_icon.dart';
 
 class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
   late SpriteComponent rhytmIndicator;
@@ -25,8 +26,23 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
 
   late final List<SpriteComponent> bars;
 
+  late final Sprite canGo;
+  late final Sprite hold;
+
   @override
   FutureOr<void> onLoad() {
+    canGo = Sprite(
+      game.images.fromCache(GfxAssets.iconsMap),
+      srcPosition: UIIconType.plus,
+      srcSize: Vector2.all(50),
+    );
+
+    hold = Sprite(
+      game.images.fromCache(GfxAssets.iconsMap),
+      srcPosition: UIIconType.minus,
+      srcSize: Vector2.all(50),
+    );
+
     position = Vector2(gameRef.camera.viewport.size.x / 2, 50);
     size = Vector2.all(24);
     rhytmIndicator = SpriteComponent(
@@ -39,11 +55,11 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
     bars = [
       for (int i = 0; i < 8; i++)
         SpriteComponent(
-          sprite: Sprite(game.images.fromCache(GfxAssets.rock2)),
+          sprite: canGo,
           position: Vector2(i * 100, 0),
-          size: Vector2.all(12),
+          size: Vector2.all(32),
           anchor: Anchor.center,
-          scale: Vector2(1, 8),
+          // scale: Vector2(1, 8),
         ),
     ];
     // bar = SpriteComponent(
@@ -86,7 +102,8 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
     for (var i = 0; i < bars.length; i++) {
       final tempo = ((time - divider * i) % travelTime) / travelTime;
       final bar = bars[i];
-      bar.scale = game.fellowship.actionInProgress ? Vector2(1, 4) : Vector2(1, 8);
+      // bar.scale = game.fellowship.actionInProgress ? Vector2(1, 4) : Vector2(1, 8);
+      bar.sprite = game.fellowship.actionInProgress ? hold : canGo;
       bar.position = Vector2(bars.length * 100 - tempo * bars.length * 100 + 20, 12);
       if (bar.position.x < 0) {
         bar.position = Vector2(bars.length * 100, 12);
@@ -98,83 +115,71 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
     removeAll(comboList);
     var components = _comboComponentsToDisplay();
     comboList = components
-      .map((x) {
-        var res = List<Component>.from(x.buttons);
-        res.add(x.description);
-        return res;
-      })
-      .expand((x) => x)
-      .toList();
+        .map((x) {
+          var res = List<Component>.from(x.buttons);
+          res.add(x.description);
+          return res;
+        })
+        .expand((x) => x)
+        .toList();
     addAll(comboList);
   }
 
-  List<ComboInfo> _comboComponentsToDisplay(){
+  List<ComboInfo> _comboComponentsToDisplay() {
     const numberOfRows = 2;
     return _combosToDisplay().asMap().entries.map((x) {
       var baseXPos = _xBasePositionForComboInfo(x.key, numberOfRows);
       var baseYPos = _yBasePositionForComboInfo(x.key, numberOfRows);
       return ComboInfo(
-        TextComponent(
-          text: x.value.name + ':',
-          position: Vector2(
-              baseXPos, 
-              baseYPos),
-          size: Vector2(20, 20),
-          anchor: Anchor.centerLeft,
-          scale: Vector2(1, 1)),
-        x.value.inputs.asMap().entries.map((y) {
-          return SpriteComponent(
-            sprite: _spritePathForButton(y.value),
-            position: Vector2(
-              baseXPos + 170 + 40 * y.key, 
-              baseYPos),
-            size: Vector2.all(20),
-            anchor: Anchor.centerLeft,
-            scale: Vector2(2, 2));
-        }).toList());
+          TextComponent(
+              text: x.value.name + ':',
+              position: Vector2(baseXPos, baseYPos),
+              size: Vector2(20, 20),
+              anchor: Anchor.centerLeft,
+              scale: Vector2(1, 1)),
+          x.value.inputs.asMap().entries.map((y) {
+            return SpriteComponent(
+                sprite: _spritePathForButton(y.value),
+                position: Vector2(baseXPos + 170 + 40 * y.key, baseYPos),
+                size: Vector2.all(20),
+                anchor: Anchor.centerLeft,
+                scale: Vector2(2, 2));
+          }).toList());
     }).toList();
   }
 
-  List<Combo> _combosToDisplay(){
+  List<Combo> _combosToDisplay() {
     var matchingCombos = game.combo.currentlyMatchingCombos;
     var indexWhereToStartDisplayingCombo = game.combo.currentIndexOfHitToMatch;
     return matchingCombos.map((combo) {
       return Combo(
-        combo.inputs
-          .asMap()
-          .entries
-          .where((x) => indexWhereToStartDisplayingCombo <= x.key)
-          .map((x) => x.value)
-          .toList(),
-        combo.name, 
-        combo.comboEffect);
-    })
-    .toList();
+          combo.inputs
+              .asMap()
+              .entries
+              .where((x) => indexWhereToStartDisplayingCombo <= x.key)
+              .map((x) => x.value)
+              .toList(),
+          combo.name,
+          combo.comboEffect);
+    }).toList();
   }
 
-  double _yBasePositionForComboInfo(int indexOfCombo, int numberOfRows){
+  double _yBasePositionForComboInfo(int indexOfCombo, int numberOfRows) {
     var bottomOfScreen = gameRef.camera.viewport.size.y;
     return bottomOfScreen * 0.9 - 60 * (indexOfCombo % numberOfRows);
   }
 
-  double _xBasePositionForComboInfo(int indexOfCombo, int numberOfRows){
+  double _xBasePositionForComboInfo(int indexOfCombo, int numberOfRows) {
     var leftSide = -gameRef.camera.viewport.size.x / 2;
     return leftSide + (indexOfCombo / numberOfRows).toInt() * 500;
   }
-
-
-
-
-
-
-
 
   //   for (var combo in matchingCombos) {
   //     var indexOfComboList = matchingCombos.indexOf(combo).toDouble();
   //     var text = TextComponent(
   //         text: combo.name + ':',
   //         position: Vector2(
-  //             100 - gameRef.camera.viewport.size.x / 2, 
+  //             100 - gameRef.camera.viewport.size.x / 2,
   //             gameRef.camera.viewport.size.y - 100 - 60 * indexOfComboList),
   //         size: Vector2(20, 20),
   //         anchor: Anchor.center,

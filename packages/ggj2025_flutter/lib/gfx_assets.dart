@@ -94,6 +94,7 @@ class GfxAssets {
 
   static const String iceMissileFlying = 'objects/ice_missile1/flying.png';
   static const String thunderstrike = 'thunderstrike.png';
+  static const String iconsMap = 'iconsx3.png';
 
   static Future<void> loadAssets(FlameGame gameRef) =>
       gameRef.images.loadAll([
@@ -170,5 +171,6 @@ class GfxAssets {
         iceMissileFlying,
         smoke,
         thunderstrike,
+        iconsMap,
       ]);
 }
