@@ -15,8 +15,8 @@ class EventGenerator {
   bool shouldGenerateFightEvent(FellowshipState state) => state.distanceTravelledSinceLastEvent >= 500;
 
   void addRandomRockAppearsEvent(World world) {
-    if (timeSinceLastEvent > 30) {
-      world.add(Rock(position: Vector2(game.cameraTarget.position.x + 80, 32)));
+    if (timeSinceLastEvent > 15) {
+      world.add(Rock(position: Vector2(game.cameraTarget.position.x, 32)));
       timeSinceLastEvent = 0;
     }
   }
@@ -25,7 +25,7 @@ class EventGenerator {
     // fellowship.stopWalking();
     world.add(EnemyBand.randomBand(
       position: Vector2(fellowship.position.x + 2000, fellowship.position.y),
-      bandSize: Random().nextInt(3) + 1,
+      bandSize: Random().nextInt(5) + 1,
     ));
   }
 }

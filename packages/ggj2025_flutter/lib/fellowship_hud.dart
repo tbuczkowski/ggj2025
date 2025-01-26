@@ -27,8 +27,8 @@ class FellowshipHud extends PositionComponent with HasGameReference<GGJ25Game> {
             fontSize: 32,
             color: Colors.white,
           )),
-      anchor: Anchor.center,
-      position: Vector2(40.0, _textOffset.y),
+      anchor: Anchor.topLeft,
+      position: Vector2(20.0, 0),
     );
     add(_bubbleStrengthValue);
   }
@@ -38,5 +38,5 @@ class FellowshipHud extends PositionComponent with HasGameReference<GGJ25Game> {
     _bubbleStrengthValue.text = _bubbleStrengthText;
   }
 
-  String get _bubbleStrengthText => '${game.fellowship.bubble.strength}';
+  String get _bubbleStrengthText => 'o2: ${game.fellowship.bubble.strength}';
 }

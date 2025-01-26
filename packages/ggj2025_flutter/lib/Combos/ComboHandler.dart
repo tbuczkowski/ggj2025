@@ -62,6 +62,7 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
     // print(timeBetweenNextPresses);
     //print(time % timeBetweenNextPresses);
     if (game.fellowship.actionInProgress) {
+      game.scoreComponent.resetMultiplier();
       GameAudioPlayer.playEffect(SfxAssets.chop);
       return;
     }

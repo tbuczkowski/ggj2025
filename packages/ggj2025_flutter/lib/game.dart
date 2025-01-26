@@ -47,6 +47,8 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   late ScoreComponent scoreComponent;
   late Fellowship _fellowship;
 
+  int bestScore = 0;
+
   CameraTarget get cameraTarget => _cameraTarget;
   late final ComboHandler combo = ComboHandler();
 
@@ -148,28 +150,55 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   void greenButtonOn() {
     // green = TextComponent(text: 'Green Button Pressed', position: Vector2(100, 100));
     combo.comboInput('bork');
+    bongoButtonsState.greenOn = true;
     // add(green!);
   }
 
   void greenButtonOff() {
     // remove(green!);
     // green = null;
+    bongoButtonsState.greenOn = false;
   }
 
   void redButtonOn() {
     // red = TextComponent(text: 'Red Button Pressed', position: Vector2(100, 200));
     combo.comboInput('bonk');
+    bongoButtonsState.redOn = true;
     // add(red!);
   }
 
   void redButtonOff() {
     // remove(red!);
     // red = null;
+    bongoButtonsState.redOn = false;
   }
 
+  BongoButtonsState bongoButtonsState = BongoButtonsState();
+
   void resetWorld() {
+    if (scoreComponent.currentScore > bestScore) {
+      bestScore = scoreComponent.currentScore;
+    }
+
     game.world = World();
     camera.viewport = MaxViewport();
     _loadWorld();
   }
+}
+
+class BongoButtonsState {
+  bool _red = false;
+  bool _green = false;
+
+  set redOn(val) {
+    _red = val;
+    redAndGreenOn.value = _red && _green;
+  }
+
+  set greenOn(val) {
+    _green = val;
+    redAndGreenOn.value = _red && _green;
+  }
+
+  ValueNotifier<bool> redAndGreenOn = ValueNotifier(false);
 }
