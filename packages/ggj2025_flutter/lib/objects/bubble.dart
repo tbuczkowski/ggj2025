@@ -73,7 +73,7 @@ class Bubble extends SpriteAnimationGroupComponent<bool> with CollisionCallbacks
 
   void onBuffDefence() {
     _strength += 10;
-
+    _strength = _strength.clamp(-100, 100);
     add(SequenceEffect([
       ColorEffect(Colors.green, EffectController(duration: 0.1), opacityFrom: 0, opacityTo: 1),
       ScaleEffect.by(Vector2.all(2), EffectController(duration: 0.3)),
@@ -105,6 +105,7 @@ class Bubble extends SpriteAnimationGroupComponent<bool> with CollisionCallbacks
 
   @override
   void update(double dt) {
+    tint(Colors.red.withOpacity((100 - _strength) / 100));
     super.update(dt);
     if (_strength <= 0 && current!) {
       current = false;

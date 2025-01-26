@@ -27,7 +27,7 @@ class GameAudioPlayer {
       bgm.stop();
     }
 
-    bgm.play(asset, volume: 0.05);
+    bgm.play(asset, volume: 0.0);
   }
 
   static void playEffect(String asset, [double? volume]) => FlameAudio.play(asset, volume: volume ?? 0.2);

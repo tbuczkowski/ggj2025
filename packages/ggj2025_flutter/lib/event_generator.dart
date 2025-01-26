@@ -15,7 +15,7 @@ class EventGenerator {
   bool shouldGenerateFightEvent(FellowshipState state) => state.distanceTravelledSinceLastEvent >= 500;
 
   void addRandomRockAppearsEvent(World world) {
-    if (timeSinceLastEvent > 15) {
+    if (timeSinceLastEvent > 15q) {
       world.add(Rock(position: Vector2(game.cameraTarget.position.x, 32)));
       timeSinceLastEvent = 0;
     }
