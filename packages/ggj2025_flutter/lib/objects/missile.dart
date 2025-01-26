@@ -32,11 +32,19 @@ class Missile extends SpriteAnimationGroupComponent<bool> with HasGameReference<
 
   void onHit() {}
 
+  void onEndLifetime() {}
+
   @override
   Future<void> onLoad() async {
     // sprite = Sprite(game.images.fromCache(spriteAsset));
 
     currentPower = power;
+
+    if (lifetime != double.infinity) {
+      Future.delayed(Duration(seconds: lifetime!.round()), () {
+        onEndLifetime();
+      });
+    }
 
     final idleAnimation = SpriteAnimation.fromFrameData(
       game.images.fromCache(spriteAsset),

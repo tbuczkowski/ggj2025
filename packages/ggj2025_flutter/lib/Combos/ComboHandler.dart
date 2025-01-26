@@ -48,7 +48,7 @@ class ComboHandler extends Component with HasGameReference<GGJ25Game> {
       gameIsInRhytmWindow = false;
       // noteAlraedyHitInTHisBit = false;
     } else if (timeSinceLastBeat > timeBetweenNextPresses - marginOfTimeError) {
-      if (!gameIsInRhytmWindow) GameAudioPlayer.playEffect(SfxAssets.metro, 0.03);
+      if (!gameIsInRhytmWindow) GameAudioPlayer.playEffect(SfxAssets.metro, 0.02);
       // log('In rhythm!');
       gameIsInRhytmWindow = true;
     } else {

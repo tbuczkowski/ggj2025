@@ -38,7 +38,7 @@ class EnemyBand extends PositionComponent with HasGameReference<GGJ25Game> {
   }
 
   void addEnemy(EnemyType enemyType) {
-    Enemy enemy = Enemy.enemyFactories[enemyType]!.call(Vector2(100.0 * state.enemies.length, 0));
+    Enemy enemy = Enemy.enemyFactories[enemyType]!.call(Vector2(100.0 * state.enemies.length, -10));
     state.enemies.add(enemy);
     add(enemy);
   }
@@ -68,12 +68,14 @@ class EnemyBand extends PositionComponent with HasGameReference<GGJ25Game> {
   void attack() {
     int attacks = random.nextInt(state.enemies.length);
 
-    game.world.addAll(List.generate(attacks, (_) => Rock(
-      rockSpeed: Vector2(0, random.nextDouble() * 100 + 25),
-      position: Vector2(
-        game.fellowship.position.x + random.nextInt(128),
-        0,
-      ),
-    )));
+    game.world.addAll(List.generate(
+        attacks,
+        (_) => Rock(
+              rockSpeed: Vector2(0, random.nextDouble() * 100 + 25),
+              position: Vector2(
+                game.fellowship.position.x + random.nextInt(128),
+                0,
+              ),
+            )));
   }
 }

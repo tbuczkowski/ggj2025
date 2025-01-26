@@ -21,27 +21,27 @@ sealed class Combos {
   static final Combo move = Combo(["bork", "bork", "bonk", "bork"], 'move', (game) {
     game.fellowship.startWalking();
     Future.delayed(Duration(milliseconds: 500), () {
-      GameAudioPlayer.playEffect(SfxAssets.b2);
+      GameAudioPlayer.playEffect(SfxAssets.b2, 0.3);
     });
   });
   static final Combo tripleBork = Combo(["bonk", "bonk", "bork", "bork"], "ice missile", (game) {
     game.world.add(IceMissile(position: game.fellowship.position));
     game.fellowship.attack();
     Future.delayed(Duration(milliseconds: 500), () {
-      GameAudioPlayer.playEffect(SfxAssets.b1);
+      GameAudioPlayer.playEffect(SfxAssets.b1, 0.3);
     });
   });
   static final Combo borkBonk = Combo(["bork", "bonk", "bork", "bonk"], "thunderstrike", (game) {
     game.world.add(Thunderstrike(position: game.fellowship.position));
     game.fellowship.attack();
     Future.delayed(Duration(milliseconds: 500), () {
-      GameAudioPlayer.playEffect(SfxAssets.b3);
+      GameAudioPlayer.playEffect(SfxAssets.b3, 0.3);
     });
   });
   static final Combo defenceBonk = Combo(['bonk', 'bork', 'bork', 'bonk'], 'bubble defence', (game) {
     game.fellowship.buffDefence();
     Future.delayed(Duration(milliseconds: 500), () {
-      GameAudioPlayer.playEffect(SfxAssets.b4);
+      GameAudioPlayer.playEffect(SfxAssets.b4, 0.3);
     });
   });
 

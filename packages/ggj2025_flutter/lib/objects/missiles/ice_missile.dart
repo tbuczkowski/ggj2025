@@ -19,7 +19,11 @@ class IceMissile extends Missile {
         );
 
   @override
-  void onHit() {
+  void onHit() {}
+
+  @override
+  void onEndLifetime() {
     game.fellowship.finishAttack();
+    super.onEndLifetime();
   }
 }
