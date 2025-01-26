@@ -1,8 +1,9 @@
 import 'package:flame/components.dart';
 import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
+import 'package:ggj2025_flutter/game.dart';
 
-class ScoreComponent extends PositionComponent {
+class ScoreComponent extends PositionComponent with HasGameRef<GGJ25Game> {
 
   int currentScore = 0;
   int currentMultiplier = 1;
@@ -51,7 +52,7 @@ class ScoreComponent extends PositionComponent {
     currentMultiplier = 1;
   }
 
-  String get _scoreText => 'Score: ${currentScore}';
+  String get _scoreText => 'Score: ${currentScore} | Bonus: ${game.bonusBongo.bonusValue}';
 
   String get _multiplierText => 'x$currentMultiplier';
 
