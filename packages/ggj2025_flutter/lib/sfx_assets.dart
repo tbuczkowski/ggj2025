@@ -14,6 +14,10 @@ sealed class SfxAssets {
   static const String bounce2 = 'Bounce_Back_2.wav';
   static const String bounce3 = 'Bounce_Back_3.wav';
   static const String metro = 'metronome.mp3';
+  static const String b1 = 'b1.mp3';
+  static const String b2 = 'b2.mp3';
+  static const String b3 = 'b3.mp3';
+  static const String b4 = 'b4.mp3';
 }
 
 class GameAudioPlayer {

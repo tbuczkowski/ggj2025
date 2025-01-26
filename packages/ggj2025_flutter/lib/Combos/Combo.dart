@@ -1,6 +1,7 @@
 import 'package:ggj2025_flutter/game.dart';
 import 'package:ggj2025_flutter/objects/missiles/ice_missile.dart';
 import 'package:ggj2025_flutter/objects/missiles/thunderstrike.dart';
+import 'package:ggj2025_flutter/sfx_assets.dart';
 
 class Combo {
   final List<String> inputs;
@@ -17,17 +18,32 @@ class Combo {
 }
 
 sealed class Combos {
-  static final Combo move = Combo(["bork", "bork", "bonk", "bork"], 'move', (game) => game.fellowship.startWalking());
+  static final Combo move = Combo(["bork", "bork", "bonk", "bork"], 'move', (game) {
+    game.fellowship.startWalking();
+    Future.delayed(Duration(milliseconds: 500), () {
+      GameAudioPlayer.playEffect(SfxAssets.b2);
+    });
+  });
   static final Combo tripleBork = Combo(["bonk", "bonk", "bork", "bork"], "ice missile", (game) {
     game.world.add(IceMissile(position: game.fellowship.position));
     game.fellowship.attack();
+    Future.delayed(Duration(milliseconds: 500), () {
+      GameAudioPlayer.playEffect(SfxAssets.b1);
+    });
   });
   static final Combo borkBonk = Combo(["bork", "bonk", "bork", "bonk"], "thunderstrike", (game) {
     game.world.add(Thunderstrike(position: game.fellowship.position));
     game.fellowship.attack();
+    Future.delayed(Duration(milliseconds: 500), () {
+      GameAudioPlayer.playEffect(SfxAssets.b3);
+    });
   });
-  static final Combo defenceBonk =
-      Combo(['bonk', 'bork', 'bork', 'bonk'], 'bubble defence', (game) => game.fellowship.buffDefence());
+  static final Combo defenceBonk = Combo(['bonk', 'bork', 'bork', 'bonk'], 'bubble defence', (game) {
+    game.fellowship.buffDefence();
+    Future.delayed(Duration(milliseconds: 500), () {
+      GameAudioPlayer.playEffect(SfxAssets.b4);
+    });
+  });
 
   static List<Combo> get all => [
         tripleBork,
