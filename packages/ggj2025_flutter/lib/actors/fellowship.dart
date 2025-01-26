@@ -84,6 +84,13 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
 
   @override
   void update(double dt) {
+    if (actionInProgressStart != null) {
+      actionInProgressStart = actionInProgressStart! + dt;
+      if (actionInProgressStart! > 2.0) {
+        actionInProgress = false;
+        actionInProgressStart = null;
+      }
+    }
     if (isDead) {
       state.heroes.forEach((h) => h.die());
       if (!children.any((c) => c is Hero)) {
@@ -130,8 +137,11 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
     updateParallaxVelocity();
   }
 
+  double? actionInProgressStart;
+
   void attack(HeroType type) {
     actionInProgress = true;
+    actionInProgressStart = 0;
     state.heroes.firstWhere((hero) => hero.heroType == type).attack();
     state.movementSpeed = 0;
     updateParallaxVelocity();
