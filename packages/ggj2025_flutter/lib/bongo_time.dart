@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
 import 'package:ggj2025_flutter/game.dart';
 
 class BongoTime extends PositionComponent with HasGameRef<GGJ25Game> {

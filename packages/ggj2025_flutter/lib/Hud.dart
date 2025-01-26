@@ -192,7 +192,7 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
   }
 
   late TextComponent BONGOTIMETEXT;
-  String get _bongoText => 'HIT THOSE BONGOS! YOU HAVE ${game.bonusBongo.bongoTimeLeft} LEFT';
+  String get _bongoText => 'HIT THOSE BONGOS!';
 
 
 
