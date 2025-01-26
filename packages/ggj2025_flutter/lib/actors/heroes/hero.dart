@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
+import 'package:flame/geometry.dart';
 import 'package:flutter/services.dart';
 import 'package:ggj2025_flutter/actors/heroes/blue_hero.dart';
 import 'package:ggj2025_flutter/actors/heroes/pink_hero.dart';
@@ -16,6 +20,9 @@ abstract class Hero extends SpriteAnimationGroupComponent<HeroState> with HasGam
   final Map<HeroState, String> animationAssets;
 
   final CircleHitbox hitbox = CircleHitbox();
+  
+  bool _isDying = false;
+  Vector2 velocity = Vector2.zero();
 
   factory Hero._blue(Vector2 position) => BlueHero(position: position);
   factory Hero._white(Vector2 position) => WhiteHero(position: position);
@@ -100,5 +107,29 @@ abstract class Hero extends SpriteAnimationGroupComponent<HeroState> with HasGam
   void attack() {
     current = HeroState.attack1;
     animationTicker?.onComplete = () => current = HeroState.idle;
+  }
+  
+  void die() {
+    if (_isDying) {
+      return;
+    }
+
+    _isDying = true;
+    
+    velocity = Vector2(0, -25);
+
+    int rotationDirection = Random.secure().nextInt(256) % 2 == 0 ? 1 : -1;
+
+    add(RotateEffect.by(tau * rotationDirection, InfiniteEffectController(LinearEffectController(3))));
+    add(OpacityEffect.fadeOut(EffectController(duration: 9), onComplete: removeFromParent));
+  }
+
+  @override
+  void update(double dt) {
+    if (_isDying) {
+      position += velocity * dt;
+    }
+    
+    super.update(dt);
   }
 }
