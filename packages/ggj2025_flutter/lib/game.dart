@@ -16,6 +16,7 @@ import 'package:ggj2025_flutter/event_generator.dart';
 import 'package:ggj2025_flutter/fellowship_hud.dart';
 import 'package:ggj2025_flutter/gfx_assets.dart';
 import 'package:ggj2025_flutter/objects/ground.dart';
+import 'package:ggj2025_flutter/overlays/game_over.dart';
 import 'package:ggj2025_flutter/score_component.dart';
 import 'package:ggj2025_flutter/sfx_assets.dart';
 
@@ -30,7 +31,9 @@ class GGJ25GameWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Focus(
       onKey: (focus, onKey) => KeyEventResult.handled,
-      child: GameWidget(game: game),
+      child: GameWidget<GGJ25Game>(game: game, overlayBuilderMap: {
+        'GameOver': (_, game) => GameOver(game: game),
+      },),
     );
   }
 }

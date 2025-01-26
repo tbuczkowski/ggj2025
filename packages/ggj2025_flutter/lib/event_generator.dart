@@ -16,7 +16,7 @@ class EventGenerator {
       state.distanceTravelledSinceLastEvent >= 500;
 
   void addRandomRockAppearsEvent(World world) {
-    if (timeSinceLastEvent > 10) {
+    if (timeSinceLastEvent > 1) {
       world.add(Rock(position: Vector2(game.cameraTarget.position.x, 32)));
       timeSinceLastEvent = 0;
     }
