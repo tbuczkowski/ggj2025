@@ -66,14 +66,15 @@ class EnemyBand extends PositionComponent with HasGameReference<GGJ25Game> {
   bool get isDead => !children.any((c) => c is Enemy);
 
   void attack() {
-    int attacks = random.nextInt(state.enemies.length);
+    int attacks = random.nextInt(state.enemies.length) + 1;
 
     game.world.addAll(List.generate(
         attacks,
-        (_) => Rock(
+        (_) => buildRandomRock(
+              random: random,
               rockSpeed: Vector2(0, random.nextDouble() * 100 + 25),
               position: Vector2(
-                game.fellowship.position.x + random.nextInt(128),
+                game.fellowship.position.x + random.nextInt(128) + 10,
                 0,
               ),
             )));

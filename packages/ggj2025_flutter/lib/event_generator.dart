@@ -25,7 +25,7 @@ class EventGenerator {
     // fellowship.stopWalking();
     world.add(EnemyBand.randomBand(
       position: Vector2(fellowship.position.x + 2000, fellowship.position.y),
-      bandSize: Random().nextInt(3) + 1,
+      bandSize: Random().nextInt(5) + 1,
     ));
   }
 }
