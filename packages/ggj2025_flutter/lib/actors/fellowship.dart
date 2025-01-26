@@ -22,7 +22,7 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
 
   // late PositionComponent cameraTarget;
 
-  static const double maxMovementSpeed = 100.0;
+  static const double maxMovementSpeed = 180.0;
 
   Fellowship({super.position}) : super(priority: 2);
 

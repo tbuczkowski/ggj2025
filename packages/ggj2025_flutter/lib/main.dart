@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> initPorts() async {
     print(SerialPort.availablePorts);
-    port = SerialPort('/dev/cu.usbmodem11301');
+    port = SerialPort('/dev/cu.usbmodem21301');
     // port = SerialPort('COM3');
     port.openReadWrite();
     // this reboots the python program running on rpi
