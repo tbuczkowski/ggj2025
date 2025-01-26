@@ -1,11 +1,9 @@
 import 'dart:math';
 
 import 'package:flame/components.dart';
-import 'package:flame/extensions.dart';
 import 'package:ggj2025_flutter/actors/enemy_band.dart';
 import 'package:ggj2025_flutter/actors/fellowship.dart';
 import 'package:ggj2025_flutter/game.dart';
-import 'package:ggj2025_flutter/objects/grass.dart';
 import 'package:ggj2025_flutter/objects/rock.dart';
 
 class EventGenerator {

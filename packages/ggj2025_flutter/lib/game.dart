@@ -15,6 +15,7 @@ import 'package:ggj2025_flutter/event_generator.dart';
 import 'package:ggj2025_flutter/fellowship_hud.dart';
 import 'package:ggj2025_flutter/gfx_assets.dart';
 import 'package:ggj2025_flutter/objects/ground.dart';
+import 'package:ggj2025_flutter/score_component.dart';
 import 'package:ggj2025_flutter/sfx_assets.dart';
 
 import 'objects/grass.dart';
@@ -37,12 +38,15 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   late final ParallaxComponent parallaxComponent;
   late final ConfigManager configManager;
   late final LevelConfig currentLevelConfig;
-  late final Fellowship fellowship;
   late CameraTarget _cameraTarget;
   final EventGenerator _eventGenerator = EventGenerator();
+  late ScoreComponent scoreComponent;
+  late Fellowship _fellowship;
 
   CameraTarget get cameraTarget => _cameraTarget;
   late final ComboHandler combo = ComboHandler();
+
+  Fellowship get fellowship => _fellowship;
 
   @override
   bool get debugMode => false;
@@ -60,7 +64,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
         .map((parallaxLayer) => ParallaxImageData(parallaxLayer))
         .toList();
 
-    fellowship = Fellowship(
+    _fellowship = Fellowship(
       position: Vector2(
         0,
         camera.viewport.size.y * 0.90 - 122,
@@ -93,9 +97,6 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     world.add(fellowship);
     add(combo);
 
-    // fellowship.addHero(HeroType.blue);
-    // fellowship.addHero(HeroType.white);
-    // fellowship.addHero(HeroType.pink);
     fellowship.addHero(HeroType.white);
     fellowship.addHero(HeroType.pink);
 
@@ -107,6 +108,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   }
 
   void _setupCamera() {
+    scoreComponent = ScoreComponent(position: Vector2(20, 40));
     _cameraTarget = CameraTarget(target: fellowship, position: Vector2(300, 0));
     world.add(_cameraTarget);
     camera.viewfinder.position = fellowship.position;
@@ -114,6 +116,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     camera.viewfinder.anchor = Anchor(0.1, 0.5);
     camera.viewport.add(Hud());
     camera.viewport.add(FellowshipHud());
+    camera.viewport.add(scoreComponent);
   }
 
   double timeSinceLastRockDropped = 0;
@@ -153,5 +156,9 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   void redButtonOff() {
     // remove(red!);
     // red = null;
+  }
+
+  void resetWorld() {
+    game.world = World();
   }
 }
