@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
+import 'package:flutter/material.dart';
 import 'package:ggj2025_flutter/ComboInfo.dart';
 import 'package:ggj2025_flutter/Combos/Combo.dart';
 import 'package:ggj2025_flutter/Combos/ComboHandler.dart';
@@ -72,6 +73,17 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
     add(rhytmIndicator);
     // add(bar);
     addAll(bars);
+
+    BONGOTIMETEXT = TextComponent(
+      text: _bongoText,
+      textRenderer: TextPaint(
+          style: const TextStyle(
+            fontSize: 32,
+            color: Colors.white,
+          )),
+      anchor: Anchor.center,
+      position: Vector2(game.camera.viewport.position.x, game.camera.viewport.position.y),
+    );
   }
 
   double time = 0;
@@ -81,6 +93,11 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
     time += dt;
     _updateRhytm();
     _updateComboList();
+    if(game.bonusBongo.bongoTimeActive){
+      add(BONGOTIMETEXT);
+    } else if(children.any((x) => x == BONGOTIMETEXT)) {
+      remove(BONGOTIMETEXT);
+    }
   }
 
   void _updateRhytm() {
@@ -173,6 +190,14 @@ class Hud extends PositionComponent with HasGameRef<GGJ25Game> {
     var leftSide = -gameRef.camera.viewport.size.x / 2;
     return leftSide + (indexOfCombo / numberOfRows).toInt() * 500;
   }
+
+  late TextComponent BONGOTIMETEXT;
+  String get _bongoText => 'HIT THOSE BONGOS! YOU HAVE ${game.bonusBongo.bongoTimeLeft} LEFT';
+
+
+
+
+
 
   //   for (var combo in matchingCombos) {
   //     var indexOfComboList = matchingCombos.indexOf(combo).toDouble();

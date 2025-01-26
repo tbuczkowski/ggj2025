@@ -10,6 +10,7 @@ import 'package:ggj2025_flutter/Combos/ComboHandler.dart';
 import 'package:ggj2025_flutter/Hud.dart';
 import 'package:ggj2025_flutter/actors/fellowship.dart';
 import 'package:ggj2025_flutter/actors/heroes/hero.dart';
+import 'package:ggj2025_flutter/bongo_time.dart';
 import 'package:ggj2025_flutter/camera_target.dart';
 import 'package:ggj2025_flutter/config/config_manager.dart';
 import 'package:ggj2025_flutter/event_generator.dart';
@@ -46,6 +47,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
   final EventGenerator _eventGenerator = EventGenerator();
   late ScoreComponent scoreComponent;
   late Fellowship _fellowship;
+  late BongoTime bonusBongo = BongoTime();
 
   int bestScore = 0;
 
@@ -128,6 +130,7 @@ class GGJ25Game extends FlameGame with HasCollisionDetection, HasKeyboardHandler
     camera.viewport.add(Hud());
     camera.viewport.add(FellowshipHud());
     camera.viewport.add(scoreComponent);
+    camera.viewport.add(bonusBongo);
   }
 
   double timeSinceLastRockDropped = 0;

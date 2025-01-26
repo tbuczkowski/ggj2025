@@ -71,6 +71,10 @@ class Fellowship extends PositionComponent with KeyboardHandler, HasGameReferenc
 
       game.parallaxComponent.parallax?.baseVelocity = Vector2(state.movementSpeed, 0);
       state.currentHero.handleInput(event, keysPressed);
+
+      if(game.bonusBongo.bongoTimeActive) {
+        game.bonusBongo.bonus += 1000;
+      }
     }
 
     return true;
