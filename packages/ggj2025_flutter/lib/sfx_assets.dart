@@ -2,7 +2,7 @@ import 'package:flame_audio/bgm.dart';
 import 'package:flame_audio/flame_audio.dart';
 
 sealed class SfxAssets {
-  static const String backgroundMusic = 'bgm.wav';
+  static const String backgroundMusic = 'bgm.mp3';
   static const String bongo1 = 'bongo1.wav';
   static const String bongo2 = 'bongo2.wav';
   static const String bongo3 = 'bongo1.wav';
